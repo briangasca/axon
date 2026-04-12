@@ -13,6 +13,7 @@ CREATE TABLE decks(
     user_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
+    is_public BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
