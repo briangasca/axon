@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Deck from './pages/Deck.jsx';
 
 
 
@@ -17,6 +18,7 @@ function App() {
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/dashboard' element={<Dashboard />}></Route>
+      <Route path='/decks/:id' element={<Deck />}></Route>
     </Routes>
   )
 }

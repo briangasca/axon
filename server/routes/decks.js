@@ -43,6 +43,23 @@ router.get('/public', async (req,res) => {
     }
 })
 
+//Get a specific deck
+router.get('/:id', authenticate, async (req,res) => {
+    const { id } = req.params;
+    console.log('userId:', req.userId, 'deckId:', req.params.id);
+
+    try {
+        const [rows] = await pool.query('SELECT * FROM decks WHERE id = ? AND user_id = ?', [id, req.userId]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Deck not found.' });
+        }
+        res.status(200).json( {deck: rows[0] } );
+
+    } catch(e) {
+        res.status(500).json({ error: e.message });
+    }
+})
+
 //Edit a deck
 router.put('/:id', authenticate, async (req,res) => {
     const { title, description, is_public } = req.body;

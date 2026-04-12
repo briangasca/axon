@@ -6,7 +6,7 @@ const router = express.Router();
 
 //Get all cards in a deck
 router.get('/:deckID', async (req,res) => {
-    const { deckID } = req.params;
+    const deckID = req.params.deckID;
 
     try {
         const [cards] = await pool.query('SELECT * FROM cards WHERE deck_id = ?', [deckID]);
@@ -18,7 +18,7 @@ router.get('/:deckID', async (req,res) => {
 
 //Create a card
 router.post('/:deckId', authenticate, async (req,res) => {
-    const { deckId } = req.params;
+    const deckId = req.params.deckId;
     const { front, back } = req.body;
 
     try {
@@ -36,8 +36,8 @@ router.post('/:deckId', authenticate, async (req,res) => {
 });
 
 //Edit a card
-router.put('/id', authenticate, async(req,res) => {
-    const { card_id } = req.params;
+router.put('/:id', authenticate, async(req,res) => {
+    const id = parseInt(req.params.id);
     const { front, back } = req.body;
 
     try {
@@ -45,7 +45,7 @@ router.put('/id', authenticate, async(req,res) => {
             return res.status(400).json({ error: 'Blank fields are not allowed.' });
         }
 
-        const [response] = await pool.query('UPDATE cards SET front = ?, back = ? WHERE id = ?', [front, back, card_id]);
+        const [response] = await pool.query('UPDATE cards SET front = ?, back = ? WHERE id = ?', [front, back, id]);
         res.status(200).json({ response });
     } catch(e) {
         res.status(500).json({ error: e.message });
@@ -53,19 +53,21 @@ router.put('/id', authenticate, async(req,res) => {
 });
 
 //Delete a card
-router.delete('/id', authenticate, async(req,res) => {
-    const { card_id } = req.params;
-
+router.delete('/:id', authenticate, async(req,res) => {
+    const id = parseInt(req.params.id);
+    console.log('delete card hit, id:', req.params.id);
 
     try {
-        const [response] = await pool.query('DELETE FROM cards WHERE card_id = ?', [card_id]);
+        const [response] = await pool.query('DELETE FROM cards WHERE id = ?', [id]);
+        console.log('affectedRows:', response.affectedRows);
 
-        if (result.affectedRows === 0) {
+        if (response.affectedRows === 0) {
             return res.status(404).json({ error: 'Card not found.' });
         }
 
         res.status(204).send();
     } catch(e) {
+        console.log(e.message);
         res.status(500).json({ error: e.message });
     }
 });
