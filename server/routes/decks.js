@@ -43,5 +43,35 @@ router.get('/public', async (req,res) => {
     }
 })
 
+//Edit a deck
+router.put('/:id', authenticate, async (req,res) => {
+    const { title, description, is_public } = req.body;
+    const { id } = req.params;
+
+    try {
+        const [result] = await pool.query('UPDATE decks SET title = ?, description = ?, is_public = ? WHERE id = ? AND user_id = ?', 
+        [title, description, is_public, id, req.userId]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Deck not found or not owned by user.' });
+        }
+
+        res.status(200).json({ id, title, description, is_public });
+    } catch(e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+//Delete a deck
+router.delete('/:id', authenticate, async (req,res) => {
+    const { id } = req.params;
+    try {
+        const [result] = await pool.query('DELETE FROM decks WHERE id = ? AND user_id = ?', [id, req.userId]);
+        res.status(204).send();
+    } catch(e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 export default router;
 
