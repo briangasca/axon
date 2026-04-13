@@ -25,7 +25,7 @@ export default function Navbar() {
             ) : (
                 <div className="flex items-center gap-3">
                 <button className="px-4 py-2 bg-white text-blue-500 font-semibold cursor-pointer rounded-full hover:bg-blue-50 transition-all duration-200" onClick={() => navigate('/login')}>Login</button>
-                <button className="px-4 py-2 bg-blue-950 text-white font-semibold cursor-pointer rounded-full hover:bg-blue-800 transition-all duration-200" onClick={() => navigate('/register')}>Register</button>
+                <button className="px-4 py-2 bg-blue-950 text-white font-semibold cursor-pointer rounded-full hover:bg-blue-800 transition-all duration-200" onClick={() => navigate('/register')}>Sign Up</button>
                 </div>
             )}
             </header>

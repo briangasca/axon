@@ -88,9 +88,18 @@ body {
   50% { transform: translateX(8px); }
 }
 
+@keyframes bounce-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+
 @layer utilities {
   .bg-page {
     background-color: #d5e1ff;
+  }
+
+  .hachi-text {
+    color: #8dc7ef;
   }
 
   .font-cal {
@@ -103,5 +112,9 @@ body {
 
   .animate-bounce-x {
     animation: bounce-x 1s ease-in-out infinite;
+  }
+
+  .animate-bounce-y {
+    animation: bounce-y 3s ease-in-out infinite;
   }
 }
