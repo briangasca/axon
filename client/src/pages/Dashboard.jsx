@@ -33,7 +33,7 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="min-h-screen" style={{ backgroundColor: '#1a1a1a' }}>
+        <div className="min-h-screen dark:bg-gray-900 ">
             {/* Navbar */}
             <div className="flex items-center justify-between px-8 py-5 border-b" style={{ borderColor: '#2a2a2a' }}>
                 <span className="text-2xl font-black tracking-tighter" style={{ color: '#6ca0f5', fontFamily: 'Georgia, serif' }}>axon</span>
@@ -74,8 +74,7 @@ export default function Dashboard() {
                     {decks.map(deck => (
                         <div
                             key={deck.id}
-                            className="rounded-2xl p-6 flex flex-col justify-between transition-all hover:scale-105 cursor-pointer"
-                            style={{ backgroundColor: '#242424', border: '1px solid #2e2e2e' }}
+                            className="rounded-2xl p-6 flex flex-col justify-between transition-all hover:scale-105 cursor-pointer dark:bg-gray-800"
                         >
                             <div onClick={() => navigate(`/decks/${deck.id}`)}>
                                 <h2 className="text-xl font-bold text-white mb-2">{deck.title}</h2>
