@@ -11,6 +11,7 @@ export default function Deck() {
     const [error, setError] = useState('');
     const [front, setFront] = useState('');
     const [back, setBack] = useState('');
+    const [figure, setFigure] = useState('');
 
     useEffect(() => {
         fetchDeck();
@@ -160,6 +161,18 @@ export default function Deck() {
                             placeholder="Answer or definition..."
                         />
                     </div>
+
+                    <div>
+                        <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition">
+                            <span>Choose File</span>
+                            <input
+                            type="file"
+                            className="hidden"
+                            onChange={(e) => setFigure(e.target.files[0])}
+                            />
+                        </label>
+                        {figure && <p className="text-sm mt-1 text-gray-500">{figure.name}</p>}
+                        </div>
                     <button
                         type="submit"
                         className="self-end px-8 py-3 rounded-full font-semibold text-white transition-all hover:scale-105 cursor-pointer"

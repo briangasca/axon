@@ -1,4 +1,4 @@
-import { pool } from '../db.js';
+import { pool, upload } from '../db.js';
 import express from 'express';
 import { authenticate } from '../middleware/auth.js';
 
@@ -17,17 +17,18 @@ router.get('/:deckID', async (req,res) => {
 });
 
 //Create a card
-router.post('/:deckId', authenticate, async (req,res) => {
+router.post('/:deckId', authenticate, upload.single("figure"), async (req,res) => {
     const deckId = req.params.deckId;
     const { front, back } = req.body;
+    const figure = req.file ? req.file.path : null;
 
     try {
         if (!front || !back) {
             return res.status(400).json({ error: 'Please fill out all fields.' });
         }
 
-        const [response] = await pool.query('INSERT INTO cards (deck_id, front, back) VALUES (?,?,?)',
-            [deckId, front, back]
+        const [response] = await pool.query('INSERT INTO cards (deck_id, front, back, figure) VALUES (?,?,?, ?)',
+            [deckId, front, back, figure]
         );
         res.status(201).json({ response });
     } catch(e) {

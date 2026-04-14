@@ -112,6 +112,7 @@ export default function StudyMode() {
                         >
                             {/* Front */}
                             <div className="flashcard-face front">
+                                <img src={`http://localhost:3000/${card.figure}`}></img>
                                 <p className="text-2xl font-semibold text-white mb-4">{card.front}</p>
                                 <p className="text-xs tracking-widest uppercase" style={{ color: '#555' }}>
                                     click to reveal
