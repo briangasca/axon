@@ -2,7 +2,7 @@
 
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Cal Sans', sans-serif;
   overflow: hidden;
 }
 
@@ -83,9 +83,26 @@ body {
   }
 }
 
+@keyframes riseUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes bounce-x {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(8px); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes bounce-y {
@@ -93,9 +110,52 @@ body {
   50% { transform: translateY(-16px); }
 }
 
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-40px); }
+  100% { transform: translateY(0px); }
+}
+
+
+@keyframes elastic-peek-left {
+  0% { transform: scaleX(0); opacity: 0; }
+  60% { transform: scaleX(1.2); } 
+  80% { transform: scaleX(0.95); } 
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes elastic-peek-right {
+  0% { transform: scaleX(0); opacity: 0; }
+  60% { transform: scaleX(1.2); }
+  80% { transform: scaleX(0.95); }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+
+
 @layer utilities {
   .bg-page {
     background-color: #d5e1ff;
+  }
+
+  .riseUp {
+    animation: riseUp 0.35s ease-out forwards;
+  }
+
+  .left-cat {
+  transform-origin: right; /* Stretches outward from the card */
+  animation: elastic-peek-left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.right-cat {
+  transform-origin: left; /* Stretches outward from the card */
+  animation: elastic-peek-right 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.15s; /* Slight stagger for more personality */
+}
+
+
+  .floating {
+    animation: floating 6s ease-in-out infinite;
   }
 
   .hachi-text {
