@@ -22,12 +22,11 @@ export default function Login() {
     }
 
     return (
-        <div className="flex gap-3 items-center justify-center min-h-screen w-screen dark:bg-gray-800">
+        <div className="flex gap-2 items-center justify-center min-h-screen w-screen dark:bg-gray-800">
             
-            <img className="w-2xl left-cat mr-8" style={{ animationDelay: '0.5s', opacity: 0 }} src='https://64.media.tumblr.com/d0cc223f852431c0126c798f2bf1d313/902670c41956764e-f9/s1280x1920/66e039e4ee229aaf7c3cf8a18cd78a74f06a6a64.pnj'></img>
             <div className="text-white bg-blue-400 rounded-xl px-16 py-16 w-lg h-md shadow-2xl shadow-black/30 ring-1 animate-fade-up">
-
-                <p className="text-2xl text-blue-700 left-0 flex items-center gap-2 pb-8 justify-center riseUp" style={{ animationDelay: '2s', opacity: 0}}>
+                
+                <p className="text-2xl text-blue-700 left-0 flex items-center gap-2 pb-8 justify-center riseUp" style={{ animationDelay: '0.5s', opacity: 0}}>
                     <img className="w-16 h-16 rounded-full" src='https://i.pinimg.com/736x/68/95/2b/68952b35bad3b8786470e09505730fd4.jpg' alt="axon logo"></img>
                     axon
                 </p>
@@ -79,8 +78,8 @@ export default function Login() {
                 
                 
             </div>
+            {/* <img className="w-2xl right-cat ml-8" style={{ animationDelay: '1.2s', opacity: 0 }} src='https://64.media.tumblr.com/136e6a239bac2739768f0067f7c3df4b/902670c41956764e-e3/s1280x1920/5344d85d0dd9a5fef54337dd6a901ede0cafa889.pnj'></img> */}
             
-            <img className="w-2xl right-cat ml-8" style={{ animationDelay: '1.2s', opacity: 0 }} src='https://64.media.tumblr.com/136e6a239bac2739768f0067f7c3df4b/902670c41956764e-e3/s1280x1920/5344d85d0dd9a5fef54337dd6a901ede0cafa889.pnj'></img>
         </div>
     )
 }
