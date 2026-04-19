@@ -3,7 +3,8 @@
 
 body {
   font-family: 'Cal Sans', sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
+  background-color: #172554;
 }
 
 .flashcard-wrapper {

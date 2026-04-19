@@ -8,7 +8,7 @@ export default function Navbar() {
     const { user, logout } = useAuth();
 
     return(
-        <header className="flex items-center w-screen bg-blue-400 text-white justify-between px-6 py-3">
+        <header className="sticky top-0 z-50 flex items-center w-screen bg-blue-400/80 backdrop-blur-md text-white justify-between px-6 py-3 border-b border-white/10">
             <div className="font-cal text-2xl cursor-pointer" onClick={() => navigate('/')}>
                 axon
             </div>

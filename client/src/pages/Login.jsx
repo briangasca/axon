@@ -26,12 +26,12 @@ export default function Login() {
 
             <div className="bg-white rounded-2xl px-10 py-10 w-full max-w-sm shadow-2xl shadow-black/40 animate-fade-up">
 
-                <div className="flex flex-col items-center gap-2 mb-8" style={{ animationDelay: '0.5s', opacity: 0}}>
+                <div className="flex flex-col items-center gap-2 mb-8">
                     <img className="w-14 h-14 rounded-full shadow-md" src='https://i.pinimg.com/736x/68/95/2b/68952b35bad3b8786470e09505730fd4.jpg' alt="axon logo" />
                     <span className="text-xl font-semibold text-blue-700 tracking-wide">axon</span>
                 </div>
 
-                <h1 className="text-2xl font-bold text-gray-800 mb-1 animate-fade-up" style={{ animationDelay: '0.15s', opacity: 0}}>
+                <h1 className="text-2xl font-bold text-gray-800 mb-1">
                     Welcome back
                 </h1>
                 <p className="text-sm text-gray-400 mb-5">Sign in to your account</p>
@@ -40,7 +40,7 @@ export default function Login() {
                     {error || ""}
                 </p>
 
-                <div className='animate-fade-up' style={{ animationDelay: '0.3', opacity: 0 }}>
+                <div>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div className="flex flex-col gap-1">
                         <label htmlFor='username-login-input' className="text-sm font-medium text-gray-600">Username</label>
