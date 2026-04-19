@@ -6,7 +6,7 @@ Study smarter, not harder. axon is a modern web app that lets you create flashca
 
 ---
 
-![axon hero](https://i.pinimg.com/736x/4c/27/fd/4c27fd0c62dee4c6f861291ca3dc6769.jpg)
+<img src="https://i.pinimg.com/736x/4c/27/fd/4c27fd0c62dee4c6f861291ca3dc6769.jpg" alt="axon hero" width="100%" style="border-radius: 12px; margin: 20px 0;">
 
 ---
 
