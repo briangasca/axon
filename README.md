@@ -1,4 +1,4 @@
-# <img src="https://i.pinimg.com/736x/68/95/2b/68952b35bad3b8786470e09505730fd4.jpg" alt="axon" width="40" style="display: inline-block; vertical-align: middle; margin-right: 8px;"> axon
+# <img src="https://i.pinimg.com/736x/68/95/2b/68952b35bad3b8786470e09505730fd4.jpg" alt="axon" width="40" style="display: inline-block; vertical-align: middle; margin-right: 8px;"> <img src="assets/axon-logo.svg" alt="axon" height="36" style="display: inline-block; vertical-align: middle;">
 
 > **Simple, Lightweight, Flashcard Studying.**
 
