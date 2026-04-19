@@ -6,7 +6,9 @@ Axon is a light-weight flashcard studying tool designed to be super basic with a
 
 ---
 
-<img src="https://i.pinimg.com/736x/4c/27/fd/4c27fd0c62dee4c6f861291ca3dc6769.jpg" alt="axon hero" width="50%" style="border-radius: 12px; margin: 20px 0;">
+<p align="center">
+  <img src="https://i.pinimg.com/736x/4c/27/fd/4c27fd0c62dee4c6f861291ca3dc6769.jpg" alt="axon hero" width="50%">
+</p>
 
 ---
 
