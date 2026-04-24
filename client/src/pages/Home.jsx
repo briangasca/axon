@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 w-screen min-h-screen">
 
         <div className='flex items-center justify-between px-16 py-24'>
@@ -53,9 +53,9 @@ export default function Home() {
             <button
               className="animate-fade-up w-fit px-16 text-lg py-3 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-800 transition-all duration-200 cursor-pointer"
               style={{ animationDelay: '0.60s', opacity: 0 }}
-              onClick={() => navigate('/register')}
+              onClick={() => navigate(user ? '/dashboard' : '/register')}
             >
-              Sign Up Now →
+              {user ? 'Continue to Dashboard →' : 'Sign Up Now →'}
             </button>
           </div>
 

@@ -39,8 +39,13 @@ export default function Deck() {
 
     const addCard = async () => {
         try {
-            const response = await api.post(`/cards/${id}`, { front, back });
-            setCards([...cards, { id: response.data.id, front, back }]);
+            const formData = new FormData();
+            formData.append('front', front);
+            formData.append('back', back);
+            if (figure) formData.append('figure', figure);
+
+            const response = await api.post(`/cards/${id}`, formData);
+            setCards([...cards, { id: response.data.id, front, back, figure: figure ? URL.createObjectURL(figure) : null }]);
             setFront('');
             setBack('');
             setFigure('');
@@ -61,25 +66,19 @@ export default function Deck() {
 
     return (
         <div className='min-h-screen text-white'>
-            <div className='flex items-center justify-between px-8 py-5 border-b border-gray-800'>
-                <span className='text-2xl font-black tracking-tighter text-blue-400 cursor-pointer' style={{ fontFamily: 'Georgia, serif' }} onClick={() => navigate('/dashboard')}>
-                    axon
-                </span>
-                <div className='flex gap-3'>
-                    <button onClick={() => navigate('/dashboard')} className='px-4 py-2 rounded-full text-sm border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors'>
-                        ← Back
-                    </button>
-                    <button onClick={() => navigate(`/decks/${id}/study`)} className='bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-colors'>
-                        Study
-                    </button>
-                </div>
-            </div>
-
             <div className='max-w-3xl mx-auto px-8 py-10'>
                 {deck && (
                     <div className='mb-10'>
                         <h1 className='text-4xl font-bold mb-2'>{deck.title}</h1>
-                        <p className='text-gray-400'>{deck.description}</p>
+                        <p className='text-gray-400 mb-6'>{deck.description}</p>
+                        <div className='flex gap-3'>
+                            <button onClick={() => navigate('/dashboard')} className='px-4 py-2 rounded-full text-sm border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors'>
+                                ← Back
+                            </button>
+                            <button onClick={() => navigate(`/decks/${id}/study`)} className='bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-colors'>
+                                Study
+                            </button>
+                        </div>
                     </div>
                 )}
 
@@ -94,7 +93,10 @@ export default function Deck() {
                 <div className='flex flex-col gap-3 mb-12'>
                     {cards.map(card => (
                         <div key={card.id} className='bg-gray-700 rounded-lg px-6 py-4 flex items-center justify-between'>
-                            <div className='flex gap-8'>
+                            <div className='flex gap-8 items-center'>
+                                {card.figure && (
+                                    <img src={card.figure.startsWith('blob:') ? card.figure : `http://localhost:5010/${card.figure}`} className='h-12 w-12 object-cover rounded-lg' />
+                                )}
                                 <div>
                                     <p className='text-xs uppercase tracking-widest mb-1 text-gray-500'>Front</p>
                                     <p className='text-white font-medium'>{card.front}</p>

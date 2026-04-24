@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
 export default function Dashboard() {
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
 
     const [decks, setDecks] = useState([]);
     const [error, setError] = useState('');
@@ -34,16 +32,6 @@ export default function Dashboard() {
 
     return (
         <div className='min-h-screen text-white'>
-            <div className='flex items-center justify-between px-8 py-5 border-b border-gray-800'>
-                <span className='text-2xl font-black tracking-tighter text-blue-400 cursor-pointer' style={{ fontFamily: 'Georgia, serif' }}>axon</span>
-                <div className='flex items-center gap-4'>
-                    <span className='text-sm text-gray-400'>Hey, <span className='text-blue-400'>{user.username}</span></span>
-                    <button onClick={logout} className='px-4 py-2 rounded-full text-sm border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors'>
-                        Logout
-                    </button>
-                </div>
-            </div>
-
             <div className='px-8 py-10 max-w-5xl mx-auto'>
                 <div className='flex items-center justify-between mb-8'>
                     <h1 className='text-3xl font-bold'>Your Decks</h1>

@@ -40,7 +40,7 @@ export default function StudyMode() {
     }
 
     const animateSlide = (direction, callback) => {
-        setSlideClass('flashcard-slide-exit');
+        setSlideClass(direction === 'next' ? 'flashcard-slide-exit' : 'flashcard-slide-exit-right');
         setTimeout(() => {
             callback();
             setSlideClass(direction === 'next' ? 'flashcard-slide-enter' : 'flashcard-slide-enter-left');
@@ -67,42 +67,29 @@ export default function StudyMode() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#1a1a1a' }}>
-            {/* Navbar */}
-            <div className="flex items-center justify-between px-8 py-5 border-b" style={{ borderColor: '#2a2a2a' }}>
-                <span
-                    className="text-2xl font-black tracking-tighter cursor-pointer"
-                    style={{ color: '#6ca0f5', fontFamily: 'Georgia, serif' }}
-                    onClick={() => navigate('/dashboard')}
-                >
-                    axon
-                </span>
-                <button
-                    onClick={() => navigate(`/decks/${id}`)}
-                    className="px-4 py-2 rounded-full text-sm font-medium border transition-all hover:scale-105 cursor-pointer"
-                    style={{ borderColor: '#444', color: '#aaaaaa' }}
-                >
-                    Exit Study
-                </button>
-            </div>
-
-            {/* Main */}
-            <div className="flex flex-col items-center justify-center flex-1 px-6 py-12">
+        <div className='min-h-screen flex flex-col text-white'>
+            <div className='flex flex-col items-center justify-center flex-1 px-6 py-12'>
                 {deck && (
-                    <h2 className="text-lg font-semibold mb-2 tracking-wide" style={{ color: '#6ca0f5' }}>
+                    <h2 className='text-lg font-semibold mb-2 tracking-wide text-blue-400'>
                         {deck.title}
                     </h2>
                 )}
 
                 {cards.length > 0 && (
-                    <p className="text-sm mb-8" style={{ color: '#555' }}>
+                    <p className='text-sm mb-4 text-gray-500'>
                         {currentCardOrder + 1} / {cards.length}
                     </p>
                 )}
 
-                {error && <p className="text-red-400 mb-4">{error}</p>}
+                <button
+                    onClick={() => navigate(`/decks/${id}`)}
+                    className='px-4 py-2 rounded-full text-sm border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors mb-8'
+                >
+                    Exit Study
+                </button>
 
-                {/* Flashcard with flip + slide */}
+                {error && <p className='text-red-400 mb-4'>{error}</p>}
+
                 {card && (
                     <div className={`flashcard-wrapper mb-10 ${slideClass}`} ref={cardRef}>
                         <div
@@ -110,38 +97,34 @@ export default function StudyMode() {
                             onClick={() => setShowFront(!showFront)}
                             style={{ cursor: 'pointer' }}
                         >
-                            {/* Front */}
-                            <div className="flashcard-face front">
-                                <img src={`http://localhost:3000/${card.figure}`}></img>
-                                <p className="text-2xl font-semibold text-white mb-4">{card.front}</p>
-                                <p className="text-xs tracking-widest uppercase" style={{ color: '#555' }}>
-                                    click to reveal
-                                </p>
+                            <div className='flashcard-face front'>
+                                {card.figure && (
+                                    <img
+                                        src={`http://localhost:5010/${card.figure}`}
+                                        className='max-h-32 object-contain mb-4 rounded-lg'
+                                    />
+                                )}
+                                <p className='text-2xl font-semibold text-white mb-4'>{card.front}</p>
+                                <p className='text-xs tracking-widest uppercase text-gray-500'>click to reveal</p>
                             </div>
-                            {/* Back */}
-                            <div className="flashcard-face back">
-                                <p className="text-2xl font-semibold mb-4" style={{ color: '#6ca0f5' }}>{card.back}</p>
-                                <p className="text-xs tracking-widest uppercase" style={{ color: '#555' }}>
-                                    click to flip back
-                                </p>
+                            <div className='flashcard-face back'>
+                                <p className='text-2xl font-semibold mb-4 text-blue-400'>{card.back}</p>
+                                <p className='text-xs tracking-widest uppercase text-gray-500'>click to flip back</p>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* Controls */}
-                <div className="flex gap-4">
+                <div className='flex gap-4'>
                     <button
                         onClick={handleBack}
-                        className="px-8 py-3 rounded-full font-semibold border transition-all hover:scale-105 cursor-pointer"
-                        style={{ borderColor: '#6ca0f5', color: '#6ca0f5' }}
+                        className='px-8 py-3 rounded-full font-semibold border border-blue-500 text-blue-400 hover:bg-blue-700 hover:text-white hover:border-blue-700 cursor-pointer transition-colors'
                     >
                         ← Prev
                     </button>
                     <button
                         onClick={handleNext}
-                        className="px-8 py-3 rounded-full font-semibold text-white transition-all hover:scale-105 cursor-pointer"
-                        style={{ backgroundColor: '#6ca0f5' }}
+                        className='bg-blue-700 hover:bg-blue-800 px-8 py-3 rounded-full font-semibold text-white cursor-pointer transition-colors'
                     >
                         Next →
                     </button>
