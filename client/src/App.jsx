@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard.jsx';
 import Deck from './pages/Deck.jsx';
 import StudyMode from './pages/StudyMode.jsx';
 import CreateDeck from './pages/CreateDeck.jsx';
+import StudyMode_MCQ from './pages/StudyMode_MCQ.jsx';
+import Stats from './pages/Stats.jsx';
 
 function GuestOnly({ children }) {
     const { user } = useAuth();
@@ -16,10 +18,15 @@ function GuestOnly({ children }) {
 
 function AppLayout() {
     return (
-        <>
-            <Navbar />
-            <Outlet />
-        </>
+        <div className='relative min-h-screen'>
+            <div className='fixed top-[-10rem] right-[-8rem] w-[32rem] h-[32rem] bg-blue-600/10 rounded-full blur-3xl pointer-events-none' />
+            <div className='fixed bottom-[-10rem] left-[-8rem] w-[32rem] h-[32rem] bg-indigo-600/10 rounded-full blur-3xl pointer-events-none' />
+            <div className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-blue-900/10 rounded-full blur-3xl pointer-events-none' />
+            <div className='relative z-10'>
+                <Navbar />
+                <Outlet />
+            </div>
+        </div>
     );
 }
 
@@ -34,6 +41,8 @@ function App() {
                 <Route path='/decks/new' element={<CreateDeck />} />
                 <Route path='/decks/:id' element={<Deck />} />
                 <Route path='/decks/:id/study' element={<StudyMode />} />
+                <Route path='/decks/:id/study/mcq' element={<StudyMode_MCQ />} />
+                <Route path='/stats' element={<Stats />} />
             </Route>
         </Routes>
     );

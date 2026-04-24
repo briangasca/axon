@@ -65,10 +65,12 @@ export default function Deck() {
     }
 
     return (
-        <div className='min-h-screen text-white'>
-            <div className='max-w-3xl mx-auto px-8 py-10'>
+        <div className='h-[calc(100vh-3.25rem)] text-white flex flex-col overflow-hidden'>
+
+            {/* Fixed header */}
+            <div className='shrink-0 max-w-3xl w-full mx-auto px-8 pt-10 pb-6'>
                 {deck && (
-                    <div className='mb-10'>
+                    <>
                         <h1 className='text-4xl font-bold mb-2'>{deck.title}</h1>
                         <p className='text-gray-400 mb-6'>{deck.description}</p>
                         <div className='flex gap-3'>
@@ -79,40 +81,45 @@ export default function Deck() {
                                 Study
                             </button>
                         </div>
-                    </div>
+                    </>
                 )}
+                {error && <p className='text-red-400 mt-4'>{error}</p>}
+            </div>
 
-                {error && <p className='text-red-400 mb-4'>{error}</p>}
-
-                <h2 className='text-sm font-semibold mb-4 uppercase tracking-widest text-blue-400'>Cards</h2>
-
-                {cards.length === 0 && (
-                    <p className='text-gray-600 mb-8'>No cards yet. Add one below!</p>
-                )}
-
-                <div className='flex flex-col gap-3 mb-12'>
-                    {cards.map(card => (
-                        <div key={card.id} className='bg-gray-700 rounded-lg px-6 py-4 flex items-center justify-between'>
-                            <div className='flex gap-8 items-center'>
-                                {card.figure && (
-                                    <img src={card.figure.startsWith('blob:') ? card.figure : `http://localhost:5010/${card.figure}`} className='h-12 w-12 object-cover rounded-lg' />
-                                )}
-                                <div>
-                                    <p className='text-xs uppercase tracking-widest mb-1 text-gray-500'>Front</p>
-                                    <p className='text-white font-medium'>{card.front}</p>
+            {/* Scrollable cards list */}
+            <div className='flex-1 overflow-hidden'>
+                <div className='max-w-3xl w-full mx-auto px-8 h-full overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-thumb]:rounded-full'>
+                    <h2 className='text-sm font-semibold mb-4 uppercase tracking-widest text-blue-400'>Cards</h2>
+                    {cards.length === 0 && (
+                        <p className='text-gray-600 mb-8'>No cards yet. Add one below!</p>
+                    )}
+                    <div className='flex flex-col gap-3 pb-4'>
+                        {cards.map(card => (
+                            <div key={card.id} className='bg-gray-700 rounded-lg px-6 py-4 flex items-center justify-between'>
+                                <div className='flex gap-8 items-center'>
+                                    {card.figure && (
+                                        <img src={card.figure.startsWith('blob:') ? card.figure : `http://localhost:5010/${card.figure}`} className='h-12 w-12 object-cover rounded-lg' />
+                                    )}
+                                    <div>
+                                        <p className='text-xs uppercase tracking-widest mb-1 text-gray-500'>Front</p>
+                                        <p className='text-white font-medium'>{card.front}</p>
+                                    </div>
+                                    <div>
+                                        <p className='text-xs uppercase tracking-widest mb-1 text-gray-500'>Back</p>
+                                        <p className='text-blue-400 font-medium'>{card.back}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className='text-xs uppercase tracking-widest mb-1 text-gray-500'>Back</p>
-                                    <p className='text-blue-400 font-medium'>{card.back}</p>
-                                </div>
+                                <button onClick={() => deleteCard(card.id)} className='text-sm px-4 py-2 rounded-full border border-red-500 text-red-400 hover:bg-red-700 hover:text-white hover:border-red-700 cursor-pointer transition-colors'>
+                                    Delete
+                                </button>
                             </div>
-                            <button onClick={() => deleteCard(card.id)} className='text-sm px-4 py-2 rounded-full border border-red-500 text-red-400 hover:bg-red-700 hover:text-white hover:border-red-700 cursor-pointer transition-colors'>
-                                Delete
-                            </button>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+            </div>
 
+            {/* Fixed add card form */}
+            <div className='shrink-0 max-w-3xl w-full mx-auto px-8 py-6 border-t border-gray-700/60'>
                 <h2 className='text-sm font-semibold mb-4 uppercase tracking-widest text-blue-400'>Add Card</h2>
                 <div className='bg-gray-700 rounded-lg px-4 py-4'>
                     <div className='text-lg my-4'>1</div>
@@ -134,8 +141,7 @@ export default function Deck() {
                         <div className='text-sm text-gray-400'>Definition/Answer</div>
                     </div>
                 </div>
-
-                <button type='button' onClick={addCard} className='bg-blue-700 hover:bg-blue-800 cursor-pointer rounded-full px-8 py-4 my-5 mb-6 self-center block mx-auto transition-colors'>
+                <button type='button' onClick={addCard} className='bg-blue-700 hover:bg-blue-800 cursor-pointer rounded-full px-8 py-4 mt-5 block mx-auto transition-colors'>
                     + Add Card
                 </button>
             </div>

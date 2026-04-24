@@ -26,4 +26,17 @@ CREATE TABLE cards(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     figure VARCHAR(255) DEFAULT NULL,
     FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE
-)
+);
+
+CREATE TABLE study_sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    deck_id INT NOT NULL,
+    mode ENUM('flashcard', 'mcq') NOT NULL,
+    cards_studied INT DEFAULT 0,
+    score INT DEFAULT NULL,
+    total INT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE
+);

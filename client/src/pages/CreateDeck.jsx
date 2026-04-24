@@ -9,9 +9,15 @@ function FlashCard({ card, index, onUpdate }) {
         <div className='grid gap-4 grid-cols-[1fr_1fr_0.4fr]'>
             <input className='bg-default rounded-lg px-4 py-4' type='text' placeholder='Enter Term or Question' value={card.front} onChange={e => onUpdate(index, 'front', e.target.value)}/>
             <input className='bg-default rounded-lg px-4 py-4' type='text' placeholder='Enter Definition or Answer' value={card.back} onChange={e => onUpdate(index, 'back', e.target.value)}/>
-            <label className='flex items-center justify-center border-2 border-dashed border-gray-400 rounded-lg px-4 py-4 cursor-pointer hover:border-blue-500 hover:bg-gray-600 transition-colors'>
-            <span className='text-sm text-gray-300'>+ Upload Image</span>
-            <input type='file' className='hidden'/>
+            <label className='flex items-center justify-center border-2 border-dashed border-gray-400 rounded-lg px-4 py-4 cursor-pointer hover:border-blue-500 hover:bg-gray-600 transition-colors overflow-hidden'>
+            {card.figure
+                ? <img src={URL.createObjectURL(card.figure)} className='max-h-16 max-w-full object-contain rounded' />
+                : <span className='text-sm text-gray-300'>+ Upload Image</span>
+            }
+            <input type='file' accept='image/*' className='hidden' onChange={e => {
+                const file = e.target.files[0];
+                if (file) onUpdate(index, 'figure', file);
+            }}/>
             </label>
             <div className='text-sm'>Question/Term</div>
             <div className='text-sm'>Definition/Answer</div>
@@ -59,7 +65,13 @@ export default function CreateDeck() {
     async function handleCreateDeck() {
         try {
             const { data } = await api.post('/decks', { title, description, is_public: isPublic });
-            await Promise.all(cards.map(card => api.post(`/cards/${data.id}`, { front: card.front, back: card.back })));
+            await Promise.all(cards.map(card => {
+                const formData = new FormData();
+                formData.append('front', card.front);
+                formData.append('back', card.back);
+                if (card.figure) formData.append('figure', card.figure);
+                return api.post(`/cards/${data.id}`, formData);
+            }));
             navigate('/dashboard');
         } catch(e) {
             setError(e.response?.data?.error || e.message);

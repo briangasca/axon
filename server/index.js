@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import deckRoutes from './routes/decks.js';
 import cardRoutes from './routes/cards.js';
+import statsRoutes from './routes/stats.js';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', authRoutes);
 app.use('/api/decks', deckRoutes);
 app.use('/api/cards', cardRoutes);
+app.use('/api/stats', statsRoutes);
 
 const PORT = process.env.PORT || 5010;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
