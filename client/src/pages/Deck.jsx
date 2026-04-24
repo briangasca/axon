@@ -12,6 +12,7 @@ export default function Deck() {
     const [front, setFront] = useState('');
     const [back, setBack] = useState('');
     const [figure, setFigure] = useState('');
+    const [figurePreview, setFigurePreview] = useState(null);
 
     useEffect(() => {
         fetchDeck();
@@ -36,13 +37,14 @@ export default function Deck() {
         }
     }
 
-    const addCard = async (e) => {
-        e.preventDefault();
+    const addCard = async () => {
         try {
             const response = await api.post(`/cards/${id}`, { front, back });
             setCards([...cards, { id: response.data.id, front, back }]);
             setFront('');
             setBack('');
+            setFigure('');
+            setFigurePreview(null);
         } catch(e) {
             setError(`Error: ${e.message}`);
         }
@@ -58,129 +60,82 @@ export default function Deck() {
     }
 
     return (
-        <div className="min-h-screen" style={{ backgroundColor: '#1a1a1a' }}>
-            {/* Navbar */}
-            <div className="flex items-center justify-between px-8 py-5 border-b" style={{ borderColor: '#2a2a2a' }}>
-                <span
-                    className="text-2xl font-black tracking-tighter cursor-pointer"
-                    style={{ color: '#6ca0f5', fontFamily: 'Georgia, serif' }}
-                    onClick={() => navigate('/dashboard')}
-                >
+        <div className='min-h-screen text-white'>
+            <div className='flex items-center justify-between px-8 py-5 border-b border-gray-800'>
+                <span className='text-2xl font-black tracking-tighter text-blue-400 cursor-pointer' style={{ fontFamily: 'Georgia, serif' }} onClick={() => navigate('/dashboard')}>
                     axon
                 </span>
-                <div className="flex gap-3">
-                    <button
-                        onClick={() => navigate('/dashboard')}
-                        className="px-4 py-2 rounded-full text-sm font-medium border transition-all hover:scale-105 cursor-pointer"
-                        style={{ borderColor: '#444', color: '#aaaaaa' }}
-                    >
+                <div className='flex gap-3'>
+                    <button onClick={() => navigate('/dashboard')} className='px-4 py-2 rounded-full text-sm border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors'>
                         ← Back
                     </button>
-                    <button
-                        onClick={() => navigate(`/decks/${id}/study`)}
-                        className="px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:scale-105 cursor-pointer"
-                        style={{ backgroundColor: '#6ca0f5' }}
-                    >
+                    <button onClick={() => navigate(`/decks/${id}/study`)} className='bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-colors'>
                         Study
                     </button>
                 </div>
             </div>
 
-            <div className="max-w-3xl mx-auto px-8 py-10">
-                {/* Deck info */}
+            <div className='max-w-3xl mx-auto px-8 py-10'>
                 {deck && (
-                    <div className="mb-10">
-                        <h1 className="text-4xl font-bold text-white mb-2">{deck.title}</h1>
-                        <p style={{ color: '#888' }}>{deck.description}</p>
+                    <div className='mb-10'>
+                        <h1 className='text-4xl font-bold mb-2'>{deck.title}</h1>
+                        <p className='text-gray-400'>{deck.description}</p>
                     </div>
                 )}
 
-                {error && <p className="text-red-400 mb-4">{error}</p>}
+                {error && <p className='text-red-400 mb-4'>{error}</p>}
 
-                {/* Cards list */}
-                <h2 className="text-lg font-semibold mb-4 uppercase tracking-widest" style={{ color: '#6ca0f5' }}>
-                    Cards
-                </h2>
+                <h2 className='text-sm font-semibold mb-4 uppercase tracking-widest text-blue-400'>Cards</h2>
 
                 {cards.length === 0 && (
-                    <p className="mb-8" style={{ color: '#555' }}>No cards yet. Add one below!</p>
+                    <p className='text-gray-600 mb-8'>No cards yet. Add one below!</p>
                 )}
 
-                <div className="flex flex-col gap-3 mb-12">
+                <div className='flex flex-col gap-3 mb-12'>
                     {cards.map(card => (
-                        <div
-                            key={card.id}
-                            className="flex items-center justify-between rounded-xl px-6 py-4"
-                            style={{ backgroundColor: '#242424', border: '1px solid #2e2e2e' }}
-                        >
-                            <div className="flex gap-8">
+                        <div key={card.id} className='bg-gray-700 rounded-lg px-6 py-4 flex items-center justify-between'>
+                            <div className='flex gap-8'>
                                 <div>
-                                    <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#555' }}>Front</p>
-                                    <p className="text-white font-medium">{card.front}</p>
+                                    <p className='text-xs uppercase tracking-widest mb-1 text-gray-500'>Front</p>
+                                    <p className='text-white font-medium'>{card.front}</p>
                                 </div>
                                 <div>
-                                    <p className="text-xs uppercase tracking-widest mb-1" style={{ color: '#555' }}>Back</p>
-                                    <p style={{ color: '#6ca0f5' }} className="font-medium">{card.back}</p>
+                                    <p className='text-xs uppercase tracking-widest mb-1 text-gray-500'>Back</p>
+                                    <p className='text-blue-400 font-medium'>{card.back}</p>
                                 </div>
                             </div>
-                            <button
-                                onClick={() => deleteCard(card.id)}
-                                className="text-sm px-4 py-2 rounded-full border transition-all hover:scale-105 cursor-pointer"
-                                style={{ borderColor: '#d15656', color: '#d15656' }}
-                            >
+                            <button onClick={() => deleteCard(card.id)} className='text-sm px-4 py-2 rounded-full border border-red-500 text-red-400 hover:bg-red-700 hover:text-white hover:border-red-700 cursor-pointer transition-colors'>
                                 Delete
                             </button>
                         </div>
                     ))}
                 </div>
 
-                {/* Add card form */}
-                <h2 className="text-lg font-semibold mb-4 uppercase tracking-widest" style={{ color: '#6ca0f5' }}>
-                    Add Card
-                </h2>
-                <form onSubmit={addCard} className="rounded-xl p-6 flex flex-col gap-4" style={{ backgroundColor: '#242424', border: '1px solid #2e2e2e' }}>
-                    <div>
-                        <label className="text-xs uppercase tracking-widest mb-2 block" style={{ color: '#555' }}>Front</label>
-                        <input
-                            type="text"
-                            value={front}
-                            onChange={(e) => setFront(e.target.value)}
-                            className="w-full rounded-lg px-4 py-3 text-white outline-none focus:ring-2"
-                            style={{ backgroundColor: '#1a1a1a', border: '1px solid #333', focusRingColor: '#6ca0f5' }}
-                            placeholder="Question or term..."
-                        />
-                    </div>
-                    <div>
-                        <label className="text-xs uppercase tracking-widest mb-2 block" style={{ color: '#555' }}>Back</label>
-                        <input
-                            type="text"
-                            value={back}
-                            onChange={(e) => setBack(e.target.value)}
-                            className="w-full rounded-lg px-4 py-3 text-white outline-none focus:ring-2"
-                            style={{ backgroundColor: '#1a1a1a', border: '1px solid #333' }}
-                            placeholder="Answer or definition..."
-                        />
-                    </div>
-
-                    <div>
-                        <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition">
-                            <span>Choose File</span>
-                            <input
-                            type="file"
-                            className="hidden"
-                            onChange={(e) => setFigure(e.target.files[0])}
-                            />
+                <h2 className='text-sm font-semibold mb-4 uppercase tracking-widest text-blue-400'>Add Card</h2>
+                <div className='bg-gray-700 rounded-lg px-4 py-4'>
+                    <div className='text-lg my-4'>1</div>
+                    <div className='grid gap-4 grid-cols-[1fr_1fr_0.4fr]'>
+                        <input className='bg-gray-800 rounded-lg px-4 py-4 text-white outline-none focus:ring-2 focus:ring-blue-500' type='text' placeholder='Enter Term or Question' value={front} onChange={e => setFront(e.target.value)} />
+                        <input className='bg-gray-800 rounded-lg px-4 py-4 text-white outline-none focus:ring-2 focus:ring-blue-500' type='text' placeholder='Enter Definition or Answer' value={back} onChange={e => setBack(e.target.value)} />
+                        <label className='flex items-center justify-center border-2 border-dashed border-gray-400 rounded-lg px-4 py-4 cursor-pointer hover:border-blue-500 hover:bg-gray-600 transition-colors overflow-hidden'>
+                            {figurePreview
+                                ? <img src={figurePreview} className='max-h-16 max-w-full object-contain rounded' />
+                                : <span className='text-sm text-gray-300'>+ Upload Image</span>
+                            }
+                            <input type='file' accept='image/*' className='hidden' onChange={e => {
+                                const file = e.target.files[0];
+                                setFigure(file);
+                                setFigurePreview(file ? URL.createObjectURL(file) : null);
+                            }} />
                         </label>
-                        {figure && <p className="text-sm mt-1 text-gray-500">{figure.name}</p>}
-                        </div>
-                    <button
-                        type="submit"
-                        className="self-end px-8 py-3 rounded-full font-semibold text-white transition-all hover:scale-105 cursor-pointer"
-                        style={{ backgroundColor: '#6ca0f5' }}
-                    >
-                        Add Card
-                    </button>
-                </form>
+                        <div className='text-sm text-gray-400'>Question/Term</div>
+                        <div className='text-sm text-gray-400'>Definition/Answer</div>
+                    </div>
+                </div>
+
+                <button type='button' onClick={addCard} className='bg-blue-700 hover:bg-blue-800 cursor-pointer rounded-full px-8 py-4 my-5 mb-6 self-center block mx-auto transition-colors'>
+                    + Add Card
+                </button>
             </div>
         </div>
     );

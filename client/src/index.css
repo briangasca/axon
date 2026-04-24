@@ -84,6 +84,17 @@ body {
   }
 }
 
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes riseUp {
   from {
     opacity: 0;
@@ -139,6 +150,10 @@ body {
     background-color: #d5e1ff;
   }
 
+  .bg-default {
+    background-color: #172554;
+  }
+
   .riseUp {
     animation: riseUp 0.35s ease-out forwards;
   }
@@ -169,6 +184,10 @@ body {
 
   .animate-fade-up {
     animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-down {
+    animation: fadeDown 0.3s ease-out forwards;
   }
 
   .animate-bounce-x {

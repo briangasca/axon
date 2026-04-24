@@ -27,7 +27,7 @@ router.post('/:deckId', authenticate, upload.single("figure"), async (req,res) =
             return res.status(400).json({ error: 'Please fill out all fields.' });
         }
 
-        const [response] = await pool.query('INSERT INTO cards (deck_id, front, back, figure) VALUES (?,?,?, ?)',
+        const [response] = await pool.query('INSERT INTO cards (deck_id, front, back, figure) VALUES (?,?,?,?)',
             [deckId, front, back, figure]
         );
         res.status(201).json({ response });
