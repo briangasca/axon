@@ -95,7 +95,7 @@ function buildChoices(allCards, correctCard) {
     return shuffle([correctCard.back, ...distractors]);
 }
 
-const SCARY_FACES = ['💀', '👹', '👻', '🙀', '😱'];
+const SCARY_FACES = ['https://i.pinimg.com/736x/0b/bb/cc/0bbbccb731fc4c0eba4502ebe2d729a4.jpg', 'https://i.pinimg.com/736x/dc/8d/3e/dc8d3e05d64137f963f85a7b3d17bc38.jpg', 'https://i.pinimg.com/736x/f6/f7/dd/f6f7dd71acb013487f19d1a083c6c109.jpg', 'https://i.pinimg.com/736x/2c/8c/21/2c8c21469395ee8ea511388e8af74d61.jpg', 'https://i.pinimg.com/736x/ac/e9/18/ace9189beaea402ae614e9770715e6ea.jpg'];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function StudyMode_MCQ() {
@@ -296,7 +296,7 @@ export default function StudyMode_MCQ() {
                     onClick={() => setJumpscareActive(false)}
                 >
                     <div style={{ animation: 'jumpscare-zoom 0.35s ease-out forwards' }} className='text-center select-none'>
-                        <p style={{ fontSize: '9rem', lineHeight: 1 }}>{scaryFace}</p>
+                        <img src={scaryFace} alt='' className='w-72 h-72 object-cover rounded-xl mx-auto mb-2' />
                         <p
                             className='text-5xl font-black tracking-[0.25em] mt-4'
                             style={{ color: '#ff1a1a', textShadow: '0 0 30px #ff0000, 0 0 60px #ff0000' }}
