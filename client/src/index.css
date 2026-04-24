@@ -168,6 +168,36 @@ body {
   100% { transform: translateY(0px); }
 }
 
+@keyframes jumpscare-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  10%  { transform: translate(-14px, -10px) rotate(-2deg); }
+  20%  { transform: translate(14px,  -8px) rotate( 2deg); }
+  30%  { transform: translate(-12px,  10px) rotate(-1.5deg); }
+  40%  { transform: translate( 12px,  12px) rotate( 1.5deg); }
+  50%  { transform: translate(-10px, -12px) rotate(-2deg); }
+  60%  { transform: translate( 10px,  10px) rotate( 2deg); }
+  70%  { transform: translate(-8px,  -8px) rotate(-1deg); }
+  80%  { transform: translate( 8px,   8px) rotate( 1deg); }
+  90%  { transform: translate(-4px,  -4px); }
+}
+
+@keyframes jumpscare-zoom {
+  0%   { transform: scale(0.2) rotate(-6deg); opacity: 0; }
+  50%  { transform: scale(1.15) rotate(3deg); opacity: 1; }
+  75%  { transform: scale(0.95) rotate(-1deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes streak-glow {
+  0%, 100% { text-shadow: 0 0 8px #ffd700, 0 0 18px #ffd700; }
+  50%       { text-shadow: 0 0 20px #ff8c00, 0 0 40px #ff8c00, 0 0 60px #ffd700; }
+}
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
 
 @keyframes elastic-peek-left {
   0% { transform: scaleX(0); opacity: 0; }
