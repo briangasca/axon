@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
 
 export default function Register() {
 
@@ -9,8 +10,20 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const { register } = useAuth();
+    const { register, googleAuth } = useAuth();
     const navigate = useNavigate();
+
+    const handleGoogle = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                await googleAuth(tokenResponse.access_token);
+                navigate('/dashboard');
+            } catch(e) {
+                setError('Google sign-in failed. Please try again.');
+            }
+        },
+        onError: () => setError('Google sign-in failed. Please try again.'),
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -72,6 +85,7 @@ export default function Register() {
 
                 <button
                     type="button"
+                    onClick={() => handleGoogle()}
                     className="flex items-center cursor-pointer justify-center gap-3 w-full bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 font-medium py-2.5 px-4 rounded-lg transition"
                 >
                     <img

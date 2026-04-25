@@ -70,6 +70,59 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// google oauth — verify access token, find or create user
+router.post('/google', async (req, res) => {
+    const { access_token } = req.body;
+    if (!access_token) return res.status(400).json({ error: 'Access token required.' });
+
+    try {
+        // Fetch user info from Google
+        const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${access_token}` }
+        });
+        if (!googleRes.ok) return res.status(401).json({ error: 'Invalid Google token.' });
+
+        const { sub: googleId, email, name } = await googleRes.json();
+
+        // Find existing user by google_id or email
+        const [rows] = await pool.query(
+            `SELECT * FROM users WHERE google_id = ? OR email = ?`,
+            [googleId, email]
+        );
+
+        let user = rows[0];
+
+        if (user) {
+            // Link google_id if they previously registered with email/password
+            if (!user.google_id) {
+                await pool.query(`UPDATE users SET google_id = ? WHERE id = ?`, [googleId, user.id]);
+            }
+        } else {
+            // Create new user — derive a unique username from their Google name
+            let baseUsername = (name || email.split('@')[0]).replace(/\s+/g, '').toLowerCase();
+            let username = baseUsername;
+            let suffix = 1;
+            while (true) {
+                const [taken] = await pool.query(`SELECT id FROM users WHERE username = ?`, [username]);
+                if (taken.length === 0) break;
+                username = `${baseUsername}${suffix++}`;
+            }
+
+            const [result] = await pool.query(
+                `INSERT INTO users (username, email, google_id) VALUES (?, ?, ?)`,
+                [username, email, googleId]
+            );
+            const [newRows] = await pool.query(`SELECT * FROM users WHERE id = ?`, [result.insertId]);
+            user = newRows[0];
+        }
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.status(200).json({ token, username: user.username });
+    } catch(e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 // forgot password — sends reset link to user's email
 router.post('/forgot-password', async (req, res) => {
     const { email } = req.body;
