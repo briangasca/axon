@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Register() {
 
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
@@ -15,7 +16,7 @@ export default function Register() {
         e.preventDefault();
         setError('');
         try {
-            await register(username, password);
+            await register(username, email, password);
             navigate('/dashboard');
         } catch(e) {
             setError('Could not create account. Please try again.');
@@ -45,6 +46,11 @@ export default function Register() {
                     <div className="flex flex-col gap-1">
                         <label htmlFor='username-register-input' className="text-sm font-medium text-gray-600">Username</label>
                         <input className="bg-gray-50 rounded-lg px-3 py-2.5 text-gray-800 placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" id='username-register-input' type='text' value={username} onChange={(e) => setUsername(e.target.value)} />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor='email-register-input' className="text-sm font-medium text-gray-600">Email</label>
+                        <input className="bg-gray-50 rounded-lg px-3 py-2.5 text-gray-800 placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" id='email-register-input' type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
 
                     <div className="flex flex-col gap-1">

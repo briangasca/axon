@@ -48,7 +48,10 @@ export default function Login() {
                     </div>
 
                     <div className="flex flex-col gap-1">
-                        <label htmlFor='password-login-input' className="text-sm font-medium text-gray-600">Password</label>
+                        <div className="flex justify-between items-center">
+                            <label htmlFor='password-login-input' className="text-sm font-medium text-gray-600">Password</label>
+                            <span className="text-xs text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgot-password')}>Forgot password?</span>
+                        </div>
                         <input className="bg-gray-50 rounded-lg px-3 py-2.5 text-gray-800 placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" id='password-login-input' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
 

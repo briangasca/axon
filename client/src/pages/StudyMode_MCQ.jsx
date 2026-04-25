@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
 const BATCH_SIZE = 15;
-const JUMPSCARE_THRESHOLD = 3;
 const STREAK_THRESHOLD = 5;
 
 // ─── Web Audio helpers ────────────────────────────────────────────────────────
@@ -30,36 +29,6 @@ function playCorrectSound() {
             osc.start(t);
             osc.stop(t + 0.45);
         });
-    } catch (_) {}
-}
-
-function playJumpscareSound() {
-    try {
-        const c = getCtx();
-        const bufLen = Math.floor(c.sampleRate * 0.7);
-        const buf = c.createBuffer(1, bufLen, c.sampleRate);
-        const data = buf.getChannelData(0);
-        for (let i = 0; i < bufLen; i++) {
-            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 0.25);
-        }
-        const src = c.createBufferSource();
-        src.buffer = buf;
-        const gn = c.createGain();
-        gn.gain.setValueAtTime(2.0, c.currentTime);
-        src.connect(gn);
-        gn.connect(c.destination);
-        src.start();
-        const osc = c.createOscillator();
-        const og = c.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(90, c.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(28, c.currentTime + 0.7);
-        og.gain.setValueAtTime(0.9, c.currentTime);
-        og.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.7);
-        osc.connect(og);
-        og.connect(c.destination);
-        osc.start(c.currentTime);
-        osc.stop(c.currentTime + 0.7);
     } catch (_) {}
 }
 
@@ -95,8 +64,6 @@ function buildChoices(allCards, correctCard) {
     return shuffle([correctCard.back, ...distractors]);
 }
 
-const SCARY_FACES = ['https://i.pinimg.com/736x/0b/bb/cc/0bbbccb731fc4c0eba4502ebe2d729a4.jpg', 'https://i.pinimg.com/736x/dc/8d/3e/dc8d3e05d64137f963f85a7b3d17bc38.jpg', 'https://i.pinimg.com/736x/f6/f7/dd/f6f7dd71acb013487f19d1a083c6c109.jpg', 'https://i.pinimg.com/736x/2c/8c/21/2c8c21469395ee8ea511388e8af74d61.jpg', 'https://i.pinimg.com/736x/ac/e9/18/ace9189beaea402ae614e9770715e6ea.jpg'];
-
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function StudyMode_MCQ() {
     const { id } = useParams();
@@ -113,12 +80,8 @@ export default function StudyMode_MCQ() {
     const [finished, setFinished] = useState(false);
     const [error, setError] = useState('');
 
-    const [wrongStreak, setWrongStreak] = useState(0);
     const [correctStreak, setCorrectStreak] = useState(0);
     const [maxStreak, setMaxStreak] = useState(0);
-    const [jumpscareActive, setJumpscareActive] = useState(false);
-    const [scaryFace] = useState(() => SCARY_FACES[Math.floor(Math.random() * SCARY_FACES.length)]);
-    const jumpscareTimer = useRef(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -138,7 +101,6 @@ export default function StudyMode_MCQ() {
             }
         };
         fetchData();
-        return () => { if (jumpscareTimer.current) clearTimeout(jumpscareTimer.current); };
     }, []);
 
     useEffect(() => {
@@ -149,19 +111,11 @@ export default function StudyMode_MCQ() {
     const hasMore = batchOffset + BATCH_SIZE < allCards.length;
     const hadStreak = maxStreak >= STREAK_THRESHOLD;
 
-    const triggerJumpscare = () => {
-        playJumpscareSound();
-        setJumpscareActive(true);
-        if (jumpscareTimer.current) clearTimeout(jumpscareTimer.current);
-        jumpscareTimer.current = setTimeout(() => setJumpscareActive(false), 2800);
-    };
-
     const handleSelect = (choice) => {
         if (selected !== null) return;
         setSelected(choice);
         if (choice === card.back) {
             setScore(s => s + 1);
-            setWrongStreak(0);
             setCorrectStreak(prev => {
                 const next = prev + 1;
                 setMaxStreak(m => Math.max(m, next));
@@ -170,14 +124,6 @@ export default function StudyMode_MCQ() {
             playCorrectSound();
         } else {
             setCorrectStreak(0);
-            setWrongStreak(prev => {
-                const next = prev + 1;
-                if (next >= JUMPSCARE_THRESHOLD) {
-                    triggerJumpscare();
-                    return 0;
-                }
-                return next;
-            });
         }
     };
 
@@ -203,7 +149,6 @@ export default function StudyMode_MCQ() {
     };
 
     const resetStreaks = () => {
-        setWrongStreak(0);
         setCorrectStreak(0);
         setMaxStreak(0);
     };
@@ -288,26 +233,6 @@ export default function StudyMode_MCQ() {
 
     return (
         <div className='min-h-screen text-white flex flex-col items-center justify-center px-6 py-12'>
-
-            {jumpscareActive && (
-                <div
-                    className='fixed inset-0 z-50 flex flex-col items-center justify-center cursor-pointer'
-                    style={{ background: 'rgba(8, 0, 0, 0.97)', animation: 'jumpscare-shake 0.55s ease-in-out' }}
-                    onClick={() => setJumpscareActive(false)}
-                >
-                    <div style={{ animation: 'jumpscare-zoom 0.35s ease-out forwards' }} className='text-center select-none'>
-                        <img src={scaryFace} alt='' className='w-72 h-72 object-cover rounded-xl mx-auto mb-2' />
-                        <p
-                            className='text-5xl font-black tracking-[0.25em] mt-4'
-                            style={{ color: '#ff1a1a', textShadow: '0 0 30px #ff0000, 0 0 60px #ff0000' }}
-                        >
-                            YOU'RE SLIPPING...
-                        </p>
-                        <p className='text-gray-500 text-base mt-6 tracking-widest'>[ click to dismiss ]</p>
-                    </div>
-                </div>
-            )}
-
             {deck && <h2 className='text-blue-400 text-2xl font-semibold mb-2 tracking-wide'>{deck.title}</h2>}
             <p className='text-base text-gray-500 mb-5'>{current + 1} / {queue.length}</p>
 

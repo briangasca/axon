@@ -10,6 +10,8 @@ import StudyMode from './pages/StudyMode.jsx';
 import CreateDeck from './pages/CreateDeck.jsx';
 import StudyMode_MCQ from './pages/StudyMode_MCQ.jsx';
 import Stats from './pages/Stats.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import ResetPassword from './pages/ResetPassword.jsx';
 
 function GuestOnly({ children }) {
     const { user } = useAuth();
@@ -36,6 +38,8 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<GuestOnly><Login /></GuestOnly>} />
             <Route path='/register' element={<GuestOnly><Register /></GuestOnly>} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
+            <Route path='/reset-password' element={<ResetPassword />} />
             <Route element={<AppLayout />}>
                 <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='/decks/new' element={<CreateDeck />} />

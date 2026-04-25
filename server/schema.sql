@@ -4,9 +4,17 @@ USE axon;
 CREATE TABLE users(
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    reset_token VARCHAR(255) DEFAULT NULL,
+    reset_token_expires DATETIME DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Run these if upgrading an existing database:
+-- ALTER TABLE users ADD COLUMN email VARCHAR(255) UNIQUE AFTER username;
+-- ALTER TABLE users ADD COLUMN reset_token VARCHAR(255) DEFAULT NULL;
+-- ALTER TABLE users ADD COLUMN reset_token_expires DATETIME DEFAULT NULL;
 
 CREATE TABLE decks(
     id INT AUTO_INCREMENT PRIMARY KEY,
