@@ -2,20 +2,12 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { pool } from '../db.js';
 
 const router = express.Router();
 
-const mailer = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: false,
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-    },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // register
 router.post('/register', async (req, res) => {
@@ -148,8 +140,8 @@ router.post('/forgot-password', async (req, res) => {
 
         const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/reset-password?token=${rawToken}`;
 
-        await mailer.sendMail({
-            from: `"Axon" <${process.env.SMTP_USER}>`,
+        await resend.emails.send({
+            from: process.env.RESEND_FROM || 'Axon <onboarding@resend.dev>',
             to: email,
             subject: 'Reset your Axon password',
             html: `
