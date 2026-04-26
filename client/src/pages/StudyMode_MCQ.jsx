@@ -248,7 +248,7 @@ export default function StudyMode_MCQ() {
             <div className='w-full max-w-[48rem]'>
                 <div className='bg-gray-700 rounded-lg px-10 py-12 text-center mb-6'>
                     {card?.figure && (
-                        <img src={`http://localhost:5010/${card.figure}`} className='max-h-48 object-contain mx-auto mb-6 rounded-lg' />
+                        <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5010'}/${card.figure}`} className='max-h-48 object-contain mx-auto mb-6 rounded-lg' />
                     )}
                     <p className='text-4xl font-semibold'>{card?.front}</p>
                 </div>

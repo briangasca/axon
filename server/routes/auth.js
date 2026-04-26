@@ -50,6 +50,9 @@ router.post('/login', async (req, res) => {
         }
 
         const user = rows[0];
+        if (!user.password) {
+            return res.status(400).json({ error: 'This account uses Google sign-in.' });
+        }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
             return res.status(400).json({ error: 'Invalid username or password.' });

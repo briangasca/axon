@@ -122,7 +122,7 @@ export default function StudyMode() {
                             <div className='flashcard-face front'>
                                 {card.figure && (
                                     <img
-                                        src={`http://localhost:5010/${card.figure}`}
+                                        src={`${import.meta.env.VITE_API_URL || 'http://localhost:5010'}/${card.figure}`}
                                         className='max-h-32 object-contain mb-4 rounded-lg'
                                     />
                                 )}

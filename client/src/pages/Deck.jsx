@@ -98,7 +98,7 @@ export default function Deck() {
                             <div key={card.id} className='bg-gray-700 rounded-lg px-6 py-4 flex items-center justify-between'>
                                 <div className='flex gap-8 items-center'>
                                     {card.figure && (
-                                        <img src={card.figure.startsWith('blob:') ? card.figure : `http://localhost:5010/${card.figure}`} className='h-12 w-12 object-cover rounded-lg' />
+                                        <img src={card.figure.startsWith('blob:') ? card.figure : `${import.meta.env.VITE_API_URL || 'http://localhost:5010'}/${card.figure}`} className='h-12 w-12 object-cover rounded-lg' />
                                     )}
                                     <div>
                                         <p className='text-xs uppercase tracking-widest mb-1 text-gray-500'>Front</p>
