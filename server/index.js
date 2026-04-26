@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js';
 import deckRoutes from './routes/decks.js';
 import cardRoutes from './routes/cards.js';
 import statsRoutes from './routes/stats.js';
+import generateRoutes from './routes/generate.js';
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/decks', deckRoutes);
 app.use('/api/cards', cardRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/generate', generateRoutes);
 
 const PORT = process.env.PORT || 5010;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));

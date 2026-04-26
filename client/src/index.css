@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+.tiptap { outline: none; }
+.tiptap p { margin: 0; }
+
 
 body {
   font-family: 'Cal Sans', sans-serif;

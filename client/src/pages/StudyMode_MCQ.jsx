@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faLayerGroup, faArrowRight, faArrowLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 
 const BATCH_SIZE = 15;
 const STREAK_THRESHOLD = 5;
@@ -53,6 +55,10 @@ function playStreakFanfare() {
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+function stripHtml(html) {
+    return html?.replace(/<[^>]*>/g, '') ?? html;
+}
+
 function shuffle(arr) {
     return [...arr].sort(() => Math.random() - 0.5);
 }
@@ -60,8 +66,8 @@ function shuffle(arr) {
 function buildChoices(allCards, correctCard) {
     const distractors = shuffle(allCards.filter(c => c.id !== correctCard.id))
         .slice(0, 3)
-        .map(c => c.back);
-    return shuffle([correctCard.back, ...distractors]);
+        .map(c => stripHtml(c.back));
+    return shuffle([stripHtml(correctCard.back), ...distractors]);
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -114,7 +120,7 @@ export default function StudyMode_MCQ() {
     const handleSelect = (choice) => {
         if (selected !== null) return;
         setSelected(choice);
-        if (choice === card.back) {
+        if (choice === stripHtml(card.back)) {
             setScore(s => s + 1);
             setCorrectStreak(prev => {
                 const next = prev + 1;
@@ -216,15 +222,15 @@ export default function StudyMode_MCQ() {
                 {score === queue.length ? 'Perfect score!' : score >= queue.length / 2 ? 'Good effort!' : 'Keep studying!'}
             </p>
             <div className='flex gap-3 mt-4'>
-                <button onClick={() => navigate(`/decks/${id}/study`)} className='px-6 py-2 rounded-full border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors'>
-                    Flash Cards
+                <button onClick={() => navigate(`/decks/${id}/study`)} className='px-6 py-2 rounded-full border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors flex items-center gap-2'>
+                    <FontAwesomeIcon icon={faLayerGroup} /> Flash Cards
                 </button>
-                <button onClick={handleTryAgain} className='px-6 py-2 rounded-full border border-blue-600 text-blue-400 hover:bg-blue-700 hover:text-white hover:border-blue-700 cursor-pointer transition-colors'>
-                    Try Again
+                <button onClick={handleTryAgain} className='px-6 py-2 rounded-full border border-blue-600 text-blue-400 hover:bg-blue-700 hover:text-white hover:border-blue-700 cursor-pointer transition-colors flex items-center gap-2'>
+                    <FontAwesomeIcon icon={faRotateRight} /> Try Again
                 </button>
                 {hasMore && (
-                    <button onClick={handleContinue} className='bg-blue-700 hover:bg-blue-800 px-6 py-2 rounded-full text-white cursor-pointer transition-colors'>
-                        Continue →
+                    <button onClick={handleContinue} className='bg-blue-700 hover:bg-blue-800 px-6 py-2 rounded-full text-white cursor-pointer transition-colors flex items-center gap-2'>
+                        Continue <FontAwesomeIcon icon={faArrowRight} />
                     </button>
                 )}
             </div>
@@ -237,11 +243,11 @@ export default function StudyMode_MCQ() {
             <p className='text-base text-gray-500 mb-5'>{current + 1} / {queue.length}</p>
 
             <div className='flex justify-between w-full max-w-[48rem] mb-8'>
-                <button onClick={() => navigate(`/decks/${id}`)} className='px-5 py-2.5 rounded-full border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors'>
-                    Exit Study
+                <button onClick={() => navigate(`/decks/${id}`)} className='px-5 py-2.5 rounded-full border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors flex items-center gap-2'>
+                    <FontAwesomeIcon icon={faXmark} /> Exit Study
                 </button>
-                <button onClick={() => navigate(`/decks/${id}/study`)} className='px-5 py-2.5 rounded-full border border-blue-600 text-blue-400 hover:bg-blue-700 hover:text-white hover:border-blue-700 cursor-pointer transition-colors'>
-                    Flash Cards
+                <button onClick={() => navigate(`/decks/${id}/study`)} className='px-5 py-2.5 rounded-full border border-blue-600 text-blue-400 hover:bg-blue-700 hover:text-white hover:border-blue-700 cursor-pointer transition-colors flex items-center gap-2'>
+                    <FontAwesomeIcon icon={faLayerGroup} /> Flash Cards
                 </button>
             </div>
 
@@ -250,7 +256,7 @@ export default function StudyMode_MCQ() {
                     {card?.figure && (
                         <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5010'}/${card.figure}`} className='max-h-48 object-contain mx-auto mb-6 rounded-lg' />
                     )}
-                    <p className='text-4xl font-semibold'>{card?.front}</p>
+                    <div className='text-4xl font-semibold' dangerouslySetInnerHTML={{ __html: card?.front }} />
                 </div>
 
                 <div className='grid grid-cols-2 gap-4'>
@@ -258,7 +264,7 @@ export default function StudyMode_MCQ() {
                         let style = 'bg-gray-700 hover:bg-gray-600 border-transparent';
                         let animation = '';
                         if (selected !== null) {
-                            if (choice === card.back) { style = 'bg-green-700 border-green-500'; animation = 'mcq-correct'; }
+                            if (choice === stripHtml(card.back)) { style = 'bg-green-700 border-green-500'; animation = 'mcq-correct'; }
                             else if (choice === selected) { style = 'bg-red-700 border-red-500'; animation = 'mcq-wrong'; }
                             else { style = 'bg-gray-700 border-transparent'; animation = 'mcq-reveal'; }
                         }
@@ -276,13 +282,13 @@ export default function StudyMode_MCQ() {
 
                 {selected !== null && (
                     <div className='flex justify-between items-center mt-8 animate-fade-up'>
-                        <p className={`text-lg font-semibold ${selected === card.back ? 'text-green-400' : 'text-red-400'}`}>
-                            {selected === card.back
+                        <p className={`text-lg font-semibold ${selected === stripHtml(card.back) ? 'text-green-400' : 'text-red-400'}`}>
+                            {selected === stripHtml(card.back)
                                 ? `Correct!${correctStreak >= 3 ? ` 🔥 ${correctStreak}×` : ''}`
-                                : `Incorrect — ${card.back}`}
+                                : `Incorrect — ${stripHtml(card.back)}`}
                         </p>
-                        <button onClick={handleNext} className='bg-blue-700 hover:bg-blue-800 px-8 py-3 rounded-full text-lg text-white cursor-pointer transition-colors'>
-                            {current + 1 === queue.length ? 'See Results' : 'Next →'}
+                        <button onClick={handleNext} className='bg-blue-700 hover:bg-blue-800 px-8 py-3 rounded-full text-lg text-white cursor-pointer transition-colors flex items-center gap-2'>
+                            {current + 1 === queue.length ? 'See Results' : <> Next <FontAwesomeIcon icon={faArrowRight} /></>}
                         </button>
                     </div>
                 )}

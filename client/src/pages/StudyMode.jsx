@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight, faXmark, faListCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function StudyMode() {
     const { id } = useParams();
@@ -97,15 +99,15 @@ export default function StudyMode() {
                 <div className='flex justify-between w-full max-w-[48rem] mb-8'>
                     <button
                         onClick={async () => { await recordSession(); navigate(`/decks/${id}`); }}
-                        className='px-5 py-2.5 rounded-full border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors'
+                        className='px-5 py-2.5 rounded-full border border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white cursor-pointer transition-colors flex items-center gap-2'
                     >
-                        Exit Study
+                        <FontAwesomeIcon icon={faXmark} /> Exit Study
                     </button>
                     <button
                         onClick={() => navigate(`/decks/${id}/study/mcq`)}
-                        className='px-5 py-2.5 rounded-full text-white bg-blue-700 hover:bg-blue-800 cursor-pointer transition-colors'
+                        className='px-5 py-2.5 rounded-full text-white bg-blue-700 hover:bg-blue-800 cursor-pointer transition-colors flex items-center gap-2'
                     >
-                        MCQ Mode
+                        <FontAwesomeIcon icon={faListCheck} /> MCQ Mode
                     </button>
                 </div>
                 
@@ -126,11 +128,11 @@ export default function StudyMode() {
                                         className='max-h-32 object-contain mb-4 rounded-lg'
                                     />
                                 )}
-                                <p className='text-4xl font-semibold text-white mb-5'>{card.front}</p>
+                                <div className='text-4xl font-semibold text-white mb-5' dangerouslySetInnerHTML={{ __html: card.front }} />
                                 <p className='text-sm tracking-widest uppercase text-gray-500'>click to reveal</p>
                             </div>
                             <div className='flashcard-face back'>
-                                <p className='text-4xl font-semibold mb-5 text-blue-400'>{card.back}</p>
+                                <div className='text-4xl font-semibold mb-5 text-blue-400' dangerouslySetInnerHTML={{ __html: card.back }} />
                                 <p className='text-sm tracking-widest uppercase text-gray-500'>click to flip back</p>
                             </div>
                         </div>
@@ -140,15 +142,15 @@ export default function StudyMode() {
                 <div className='flex gap-4 mt-10'>
                     <button
                         onClick={handleBack}
-                        className='px-10 py-4 rounded-full text-lg font-semibold border border-blue-500 text-blue-400 hover:bg-blue-700 hover:text-white hover:border-blue-700 cursor-pointer transition-colors'
+                        className='px-10 py-4 rounded-full text-lg font-semibold border border-blue-500 text-blue-400 hover:bg-blue-700 hover:text-white hover:border-blue-700 cursor-pointer transition-colors flex items-center gap-3'
                     >
-                        ← Prev
+                        <FontAwesomeIcon icon={faArrowLeft} /> Prev
                     </button>
                     <button
                         onClick={handleNext}
-                        className='bg-blue-700 hover:bg-blue-800 px-10 py-4 rounded-full text-lg font-semibold text-white cursor-pointer transition-colors'
+                        className='bg-blue-700 hover:bg-blue-800 px-10 py-4 rounded-full text-lg font-semibold text-white cursor-pointer transition-colors flex items-center gap-3'
                     >
-                        Next →
+                        Next <FontAwesomeIcon icon={faArrowRight} />
                     </button>
                 </div>
             </div>

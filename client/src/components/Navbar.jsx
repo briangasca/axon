@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTableCells, faChartBar, faRightFromBracket, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar() {
     const navigate = useNavigate();
@@ -7,18 +9,33 @@ export default function Navbar() {
 
     return (
         <header className='sticky top-0 z-50 flex items-center w-full bg-blue-400/80 backdrop-blur-md text-white justify-between px-6 py-3 border-b border-white/10'>
-            <div className='font-cal text-2xl cursor-pointer' onClick={() => navigate(user ? '/' : '/')}>axon</div>
+            <div className='font-cal text-2xl cursor-pointer' onClick={() => navigate('/')}>axon</div>
             {user ? (
                 <div className='flex items-center gap-3'>
                     <p className='text-sm opacity-80'>Welcome back, <span className='font-semibold'>{user.username}</span></p>
-                    <button className='px-4 py-2 bg-white text-blue-500 font-semibold cursor-pointer rounded-full hover:bg-blue-50 transition-all duration-200' onClick={() => navigate('/dashboard')}>Dashboard</button>
-                    <button className='px-4 py-2 bg-white text-blue-500 font-semibold cursor-pointer rounded-full hover:bg-blue-50 transition-all duration-200' onClick={() => navigate('/stats')}>Stats</button>
-                    <button className='px-4 py-2 bg-red-400 text-white font-semibold cursor-pointer rounded-full hover:bg-red-500 transition-all duration-200' onClick={logout}>Logout</button>
+                    <button className='px-4 py-2 bg-white text-blue-500 font-semibold cursor-pointer rounded-full hover:bg-blue-50 transition-all duration-200 flex items-center gap-2' onClick={() => navigate('/dashboard')}>
+                        <FontAwesomeIcon icon={faTableCells} />
+                        Dashboard
+                    </button>
+                    <button className='px-4 py-2 bg-white text-blue-500 font-semibold cursor-pointer rounded-full hover:bg-blue-50 transition-all duration-200 flex items-center gap-2' onClick={() => navigate('/stats')}>
+                        <FontAwesomeIcon icon={faChartBar} />
+                        Stats
+                    </button>
+                    <button className='px-4 py-2 bg-red-400 text-white font-semibold cursor-pointer rounded-full hover:bg-red-500 transition-all duration-200 flex items-center gap-2' onClick={() => { logout(); navigate('/'); }}>
+                        <FontAwesomeIcon icon={faRightFromBracket} />
+                        Logout
+                    </button>
                 </div>
             ) : (
                 <div className='flex items-center gap-3'>
-                    <button className='px-4 py-2 bg-white text-blue-500 font-semibold cursor-pointer rounded-full hover:bg-blue-50 transition-all duration-200' onClick={() => navigate('/login')}>Login</button>
-                    <button className='px-4 py-2 bg-blue-950 text-white font-semibold cursor-pointer rounded-full hover:bg-blue-800 transition-all duration-200' onClick={() => navigate('/register')}>Sign Up</button>
+                    <button className='px-4 py-2 bg-white text-blue-500 font-semibold cursor-pointer rounded-full hover:bg-blue-50 transition-all duration-200 flex items-center gap-2' onClick={() => navigate('/login')}>
+                        <FontAwesomeIcon icon={faRightToBracket} />
+                        Login
+                    </button>
+                    <button className='px-4 py-2 bg-blue-950 text-white font-semibold cursor-pointer rounded-full hover:bg-blue-800 transition-all duration-200 flex items-center gap-2' onClick={() => navigate('/register')}>
+                        <FontAwesomeIcon icon={faUserPlus} />
+                        Sign Up
+                    </button>
                 </div>
             )}
         </header>

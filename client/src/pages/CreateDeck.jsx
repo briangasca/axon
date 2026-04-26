@@ -148,7 +148,7 @@ export default function CreateDeck() {
 
             {importing && importScreen()}
 
-            <div className='flex flex-col justify-start my-25 mx-auto w-1/2'>
+            <div className='flex flex-col justify-start my-8 mx-auto w-1/2'>
 
                 
                 <h1 className='text-3xl'>Create a new deck</h1>
@@ -169,7 +169,7 @@ export default function CreateDeck() {
                 </div>
 
                 <div className='flex justify-between'>
-                    <button className='bg-blue-700 hover:bg-blue-800 cursor-pointer rounded-full self-start px-4 py-2 my-5 mb-6' onClick={() => setImporting(!importing)}>+ Import from Quizlet</button>
+                    <button className='bg-blue-700 hover:bg-blue-800 cursor-pointer rounded-full self-start px-4 py-2 my-5 mb-6' onClick={() => setImporting(!importing)}>+ Import</button>
                     <button className='bg-green-600 hover:bg-green-800 cursor-pointer rounded-full self-start px-4 py-2 my-5 mb-6' onClick={handleCreateDeck}>Create Deck</button>
                 </div>
                 
