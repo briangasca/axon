@@ -2,7 +2,7 @@
 
 > **Simple, Lightweight, Flashcard Studying.**
 
-Axon is a light-weight flashcard studying tool designed to be super basic with a nice UI. Public website ready soon.
+Axon is a light-weight flashcard studying tool designed to be super basic with a nice UI. Check it out [here!](https://axon-client-production.up.railway.app/)
 
 ---
 
@@ -93,4 +93,4 @@ See [Issues](https://github.com/briangasca/axon/issues) for more planned feature
 
 ---
 
-Made with ❤️ for better studying.
+Made with ❤️
