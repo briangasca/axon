@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faCloudArrowUp, faFileLines } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faCloudArrowUp, faFileLines, faSpinner, faMagicWandSparkles } from '@fortawesome/free-solid-svg-icons';
 import api from '../api/axios';
 
 const DIFFICULTIES = ['Beginner', 'Intermediate', 'Advanced'];
@@ -13,7 +13,7 @@ export default function CreateDeckWithNotesModal({ onClose }) {
     const [dragging, setDragging] = useState(false);
     const [topic, setTopic] = useState('');
     const [quantity, setQuantity] = useState(20);
-    const [cardType, setCardType] = useState('Term / Definition');
+    const [cardType, setCardType] = useState(['Term / Definition']);
     const [context, setContext] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -57,7 +57,7 @@ export default function CreateDeckWithNotesModal({ onClose }) {
 
                 {/* Header */}
                 <div className='flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-700'>
-                    <h2 className='text-white font-semibold'>Generate Flashcards with AI</h2>
+                    <h2 className='text-white font-semibold'> <FontAwesomeIcon icon={faMagicWandSparkles}/> Generate Flashcards with AI</h2>
                     <button onClick={onClose} className='text-gray-500 hover:text-white transition-colors cursor-pointer'>
                         <FontAwesomeIcon icon={faXmark} />
                     </button>
@@ -136,12 +136,19 @@ export default function CreateDeckWithNotesModal({ onClose }) {
 
 
                         <div className='flex flex-col gap-1.5'>
-                            <label className='text-xs text-white'>Card Format</label>
+                            <label className='text-xs text-white'>Card Format<div className='text-xs text-gray-500'>(Select all that apply)</div></label>
                             <div className='flex gap-2'>
                                 {CARD_TYPES.map(t => (
-                                    <button key={t} onClick={() => setCardType(t)}
+                                    <button key={t} onClick={() => {
+                                        if (cardType.includes(t)) {
+                                            const newCardTypes = cardType.filter(type => type !== t);
+                                            setCardType(newCardTypes);
+                                        } else {
+                                            setCardType(prev => [...prev, t]);
+                                        }
+                                    }}
                                         className={`flex-1 py-1.5 rounded-full text-xs border cursor-pointer transition-colors ${
-                                            cardType === t ? 'bg-blue-700 border-blue-600 text-white' : 'border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white'
+                                            cardType.includes(t) ? 'bg-blue-700 border-blue-600 text-white' : 'border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white'
                                         }`}>
                                         {t}
                                     </button>
@@ -172,7 +179,10 @@ export default function CreateDeckWithNotesModal({ onClose }) {
                             Cancel
                         </button>
                         <button onClick={handleGenerate} disabled={loading || !file} className='flex-1 py-2.5 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold cursor-pointer transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed'>
-                            {loading ? 'Generating…' : 'Generate'}
+                            {loading
+                                ? <><FontAwesomeIcon icon={faSpinner} className='animate-spin' /> Generating…</>
+                                : 'Generate'
+                            }
                         </button>
                     </div>
                 </div>

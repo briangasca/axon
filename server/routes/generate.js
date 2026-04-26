@@ -32,7 +32,10 @@ async function extractText(file) {
 
 // POST /api/generate
 router.post('/', authenticate, upload.single('file'), async (req, res) => {
-    const { topic, quantity = 20, cardType = 'Term / Definition', context = '' } = req.body;
+    const { topic, quantity = 20, context = '' } = req.body;
+    // cardType arrives as a comma-separated string from FormData
+    const raw = req.body.cardType ?? 'Term / Definition';
+    const cardTypes = Array.isArray(raw) ? raw : raw.split(',').map(s => s.trim()).filter(Boolean);
 
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded.' });
@@ -52,19 +55,31 @@ router.post('/', authenticate, upload.single('file'), async (req, res) => {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
     const cardTypeInstructions = {
-        'Term / Definition': 'Each card should have a term on the front and its definition on the back.',
-        'Question / Answer': 'Each card should have a question on the front and the answer on the back.',
-        'Fill in the Blank': 'Each card front should be a sentence with a key word or phrase replaced by "______", and the back should contain the missing word or phrase.',
+        'Term / Definition': 'Term / Definition — front: a term, back: its definition.',
+        'Question / Answer': 'Question / Answer — front: a question, back: the answer.',
+        'Fill in the Blank': "Fill in the Blank — front: a sentence with a key word replaced by '______', back: the missing word or phrase.",
     };
+
+    const selectedInstructions = cardTypes
+        .map(t => cardTypeInstructions[t] ?? cardTypeInstructions['Term / Definition'])
+        .join('\n        ');
+
+    const mixNote = cardTypes.length > 1
+        ? `Distribute the ${quantity} cards evenly across all selected formats. Each card must include a "type" field set to one of: ${cardTypes.join(', ')}.`
+        : `All cards should use the "${cardTypes[0]}" format.`;
 
     const prompt = `You are an expert flashcard creator. Based on the notes provided, generate exactly ${quantity} flashcards.
 
-        Please gauge the difficulty of the material and adjust the complexity of the questions accordingly, but please keep it mostly relevant to the material extracted.
-        Card format: ${cardType}
+        Please gauge the difficulty of the material and adjust the complexity of the questions accordingly, but keep it relevant to the material extracted.
         ${topic ? `Topic focus: ${topic}` : ''}
         ${context ? `Additional instructions: ${context}` : ''}
 
-        Format instructions: ${cardTypeInstructions[cardType] || cardTypeInstructions['Term / Definition']}
+        Card format(s) to use:
+        ${selectedInstructions}
+
+        ${mixNote}
+
+        Please do not use a "Question", "Answer", "Definition", etc. prefix before the card. We do not want to distinguish explicitly which cards are which.
 
         Return ONLY a valid JSON object in this exact format, with no extra text before or after:
         {
@@ -76,8 +91,8 @@ router.post('/', authenticate, upload.single('file'), async (req, res) => {
             ]
         }
 
-Notes to use:
-${noteText.slice(0, 15000)}`;
+        Notes to use:
+        ${noteText.slice(0, 15000)}`;
 
     let aiResponse;
     try {

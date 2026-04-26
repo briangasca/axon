@@ -4,7 +4,7 @@ import api from '../api/axios';
 import { DeckCardSkeleton } from '../components/Skeleton';
 import CreateDeckWithNotesModal from '../components/CreateDeckWithNotesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faPen, faTrash, faMagnifyingGlass, faNoteSticky } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen, faTrash, faMagnifyingGlass, faNoteSticky, faMagicWandSparkles } from '@fortawesome/free-solid-svg-icons';
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -55,7 +55,7 @@ export default function Dashboard() {
                             <FontAwesomeIcon icon={faPlus} /> New Deck
                         </button>
                         <button onClick={() => setShowNotesModal(true)} className='bg-green-600 rounded-full cursor-pointer px-6 py-2 hover:bg-green-700 transition-colors ml-2 gap-2'>
-                            <FontAwesomeIcon icon={faNoteSticky} /> Create Deck with Notes
+                            <FontAwesomeIcon icon={faMagicWandSparkles} /> Create Deck with Notes (AI)
                         </button>
                     </div>
                     
