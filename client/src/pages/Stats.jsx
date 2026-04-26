@@ -27,10 +27,10 @@ function Heatmap({ data }) {
     const getColor = (count, future) => {
         if (future) return 'bg-transparent';
         if (!count) return 'bg-gray-800';
-        if (count >= 8) return 'bg-blue-400';
-        if (count >= 5) return 'bg-blue-500';
-        if (count >= 3) return 'bg-blue-700';
-        return 'bg-blue-900';
+        if (count >= 8) return 'bg-green-400';
+        if (count >= 5) return 'bg-green-500';
+        if (count >= 3) return 'bg-green-700';
+        return 'bg-green-900';
     };
 
     const monthLabels = [];
@@ -51,13 +51,13 @@ function Heatmap({ data }) {
             <div className='flex gap-1 mb-1 ml-6'>
                 {weeks.map((_, wi) => {
                     const label = monthLabels.find(m => m.wi === wi);
-                    return <div key={wi} className='w-3 text-center text-xs text-gray-500 shrink-0'>{label?.label ?? ''}</div>;
+                    return <div key={wi} className='w-3 text-center text-xs text-white shrink-0'>{label?.label ?? ''}</div>;
                 })}
             </div>
             <div className='flex gap-1'>
                 <div className='flex flex-col gap-1 mr-1'>
                     {dayLabels.map((d, i) => (
-                        <div key={i} className='w-3 h-3 text-xs text-gray-600 flex items-center justify-center'>{i % 2 === 1 ? d : ''}</div>
+                        <div key={i} className='w-3 h-3 text-xs text-white flex items-center justify-center'>{i % 2 === 1 ? d : ''}</div>
                     ))}
                 </div>
                 {weeks.map((week, wi) => (
@@ -72,9 +72,9 @@ function Heatmap({ data }) {
                     </div>
                 ))}
             </div>
-            <div className='flex items-center gap-2 mt-3 text-xs text-gray-500'>
+            <div className='flex items-center gap-2 mt-3 text-xs text-white'>
                 <span>Less</span>
-                {['bg-gray-800', 'bg-blue-900', 'bg-blue-700', 'bg-blue-500', 'bg-blue-400'].map(c => (
+                {['bg-gray-800', 'bg-green-900', 'bg-green-700', 'bg-green-500', 'bg-green-400'].map(c => (
                     <div key={c} className={`w-3 h-3 rounded-sm ${c}`} />
                 ))}
                 <span>More</span>
@@ -86,9 +86,9 @@ function Heatmap({ data }) {
 function StatCard({ label, value, sub }) {
     return (
         <div className='bg-gray-700/50 rounded-xl px-6 py-5 flex flex-col gap-1'>
-            <p className='text-xs uppercase tracking-widest text-gray-500'>{label}</p>
+            <p className='text-xs uppercase tracking-widest text-blue-400'>{label}</p>
             <p className='text-4xl font-bold text-white'>{value}</p>
-            {sub && <p className='text-sm text-gray-400'>{sub}</p>}
+            {sub && <p className='text-sm text-blue-400'>{sub}</p>}
         </div>
     );
 }
@@ -156,7 +156,7 @@ export default function Stats() {
                 <div className='bg-gray-700/50 rounded-xl px-6 py-6'>
                     <h2 className='text-sm uppercase tracking-widest text-blue-400 font-semibold mb-5'>Deck Activity</h2>
                     {decks.length === 0 ? (
-                        <p className='text-gray-500 text-sm'>No sessions recorded yet.</p>
+                        <p className='text-white text-sm'>No sessions recorded yet.</p>
                     ) : (
                         <div className='flex flex-col gap-3'>
                             {decks.map((d, i) => (
@@ -167,7 +167,7 @@ export default function Stats() {
                                     </div>
                                     <div className='text-right'>
                                         <p className='text-blue-400 font-semibold'>{d.sessions} sessions</p>
-                                        <p className='text-gray-500 text-xs'>{d.cards_studied} cards</p>
+                                        <p className='text-white text-xs'>{d.cards_studied} cards</p>
                                     </div>
                                 </div>
                             ))}
@@ -179,27 +179,27 @@ export default function Stats() {
                 <div className='bg-gray-700/50 rounded-xl px-6 py-6'>
                     <h2 className='text-sm uppercase tracking-widest text-blue-400 font-semibold mb-5'>MCQ Performance</h2>
                     {mcq.length === 0 ? (
-                        <p className='text-gray-500 text-sm'>No MCQ sessions yet.</p>
+                        <p className='text-white text-sm'>No MCQ sessions yet.</p>
                     ) : (
                         <div className='flex flex-col gap-3'>
                             {mcq.map((m, i) => (
                                 <div key={i} className='border-b border-gray-600/50 pb-3 last:border-0 last:pb-0'>
                                     <div className='flex items-center justify-between mb-2'>
                                         <p className='font-medium text-white text-sm'>{m.title}</p>
-                                        <p className='text-xs text-gray-500'>{m.sessions} attempt{m.sessions !== 1 ? 's' : ''}</p>
+                                        <p className='text-xs text-white'>{m.sessions} attempt{m.sessions !== 1 ? 's' : ''}</p>
                                     </div>
                                     <div className='flex gap-4'>
                                         <div>
-                                            <p className='text-xs text-gray-500 mb-0.5'>Best</p>
+                                            <p className='text-xs text-white mb-0.5'>Best</p>
                                             <p className='text-green-400 font-bold'>{m.best_pct}%</p>
                                         </div>
                                         <div>
-                                            <p className='text-xs text-gray-500 mb-0.5'>Avg</p>
+                                            <p className='text-xs text-white mb-0.5'>Avg</p>
                                             <p className='text-blue-400 font-bold'>{m.avg_pct}%</p>
                                         </div>
                                         <div className='flex-1'>
-                                            <p className='text-xs text-gray-500 mb-1'>Avg score</p>
-                                            <div className='h-1.5 bg-gray-600 rounded-full overflow-hidden'>
+                                            <p className='text-xs text-white mb-1'>Avg score</p>
+                                            <div className='h-1.5 bg-gray-400 rounded-full overflow-hidden'>
                                                 <div
                                                     className='h-full bg-blue-500 rounded-full'
                                                     style={{ width: `${m.avg_pct}%` }}
