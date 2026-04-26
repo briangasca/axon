@@ -168,7 +168,7 @@ export default function Deck() {
                                 <FontAwesomeIcon icon={faTrash} /> Delete
                             </button>
                             <button onClick={openEditModal} className='px-4 py-2 rounded-full text-sm bg-green-600 hover:bg-green-800 text-white cursor-pointer transition-colors flex items-center gap-2'>
-                                <FontAwesomeIcon icon={faPen} /> Edit
+                                <FontAwesomeIcon icon={faPen} /> Edit Deck
                             </button>
                             <div className='ml-auto'>
                                 <button onClick={() => navigate(`/decks/${id}/study`)} className='bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-colors flex items-center gap-2'>
@@ -201,20 +201,20 @@ export default function Deck() {
                                         <div className='text-blue-400 font-medium text-sm' dangerouslySetInnerHTML={{ __html: card.back }} />
                                     </div>
                                 </div>
-                                <div className='flex items-center gap-2 shrink-0'>
+                                <div className='flex flex-col gap-2 shrink-0'>
                                     <button
                                         onClick={() => setEditingCardId(editingCardId === card.id ? null : card.id)}
-                                        className={`p-2 rounded-full transition-colors cursor-pointer ${editingCardId === card.id ? 'text-blue-400 bg-blue-900/40' : 'text-gray-400 hover:text-white'}`}
+                                        className={`px-4 py-2 border text-white hover:text-gray-600 border-white hover:bg-white rounded-full transition-colors cursor-pointer ${editingCardId === card.id ? 'bg-green-500' : 'text-white hover:text-gray-500'}`}
                                     >
                                         <FontAwesomeIcon icon={faPen} />
                                     </button>
-                                    <button onClick={() => deleteCard(card.id)} className='text-sm px-4 py-2 rounded-full border border-red-500 text-red-400 hover:bg-red-700 hover:text-white hover:border-red-700 cursor-pointer transition-colors flex items-center gap-2'>
-                                        <FontAwesomeIcon icon={faTrash} /> Delete
+                                    <button onClick={() => deleteCard(card.id)} className=' px-4 py-2 rounded-full border border-red-500 text-red-400 hover:bg-red-700 hover:text-white hover:border-red-700 cursor-pointer transition-colors'>
+                                        <FontAwesomeIcon icon={faTrash} />
                                     </button>
                                 </div>
                             </div>
                             {editingCardId === card.id && (
-                                <CardEditor card={card} onSave={handleCardSave} />
+                                <CardEditor card={card} onSave={handleCardSave} isClosing={editingCardId != card.id}/>
                             )}
                         </div>
                     ))}
