@@ -18,7 +18,7 @@ export default function Dashboard() {
     const fetchDecks = async () => {
         try {
             const response = await api.get('/decks');
-            setDecks(response.data.decks);
+            setDecks(response.data.decks ?? []);
         } catch(e) {
             setError(e.message);
         } finally {
