@@ -1,6 +1,6 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { useRef } from 'react';
+import { useRef, forwardRef, useImperativeHandle } from 'react';
 
 function EditorField({ label, content, onUpdate, textClass }) {
     const editor = useEditor({
@@ -22,10 +22,14 @@ function EditorField({ label, content, onUpdate, textClass }) {
     );
 }
 
-export default function CardEditor({ card, onSave }) {
+const CardEditor = forwardRef(function CardEditor({ card, onSave }, ref) {
     const containerRef = useRef(null);
     const frontHTML = useRef(card.front);
     const backHTML = useRef(card.back);
+
+    useImperativeHandle(ref, () => ({
+        save: () => onSave(card.id, frontHTML.current, backHTML.current),
+    }));
 
     const handleBlur = (e) => {
         if (!containerRef.current?.contains(e.relatedTarget)) {
@@ -53,4 +57,6 @@ export default function CardEditor({ card, onSave }) {
             />
         </div>
     );
-}
+});
+
+export default CardEditor;

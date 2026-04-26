@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,6 +21,7 @@ export default function Deck() {
     const [editDescription, setEditDescription] = useState('');
     const [editError, setEditError] = useState('');
     const [editingCardId, setEditingCardId] = useState(null);
+    const cardEditorRef = useRef(null);
 
     useEffect(() => {
         fetchDeck();
@@ -203,7 +204,14 @@ export default function Deck() {
                                 </div>
                                 <div className='flex flex-col gap-2 shrink-0'>
                                     <button
-                                        onClick={() => setEditingCardId(editingCardId === card.id ? null : card.id)}
+                                        onMouseDown={e => { if (editingCardId === card.id) e.preventDefault(); }}
+                                        onClick={() => {
+                                            if (editingCardId === card.id) {
+                                                cardEditorRef.current?.save();
+                                            } else {
+                                                setEditingCardId(card.id);
+                                            }
+                                        }}
                                         className={`px-4 py-2 border text-white hover:text-gray-600 border-white hover:bg-white rounded-full transition-colors cursor-pointer ${editingCardId === card.id ? 'bg-green-500' : 'text-white hover:text-gray-500'}`}
                                     >
                                         <FontAwesomeIcon icon={faPen} />
@@ -214,7 +222,7 @@ export default function Deck() {
                                 </div>
                             </div>
                             {editingCardId === card.id && (
-                                <CardEditor card={card} onSave={handleCardSave} isClosing={editingCardId != card.id}/>
+                                <CardEditor ref={cardEditorRef} card={card} onSave={handleCardSave} />
                             )}
                         </div>
                     ))}
