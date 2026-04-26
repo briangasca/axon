@@ -93,4 +93,4 @@ See [Issues](https://github.com/briangasca/axon/issues) for more planned feature
 
 ---
 
-Made with ❤️ for better studying.
+Made with ❤️
