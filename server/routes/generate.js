@@ -2,9 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import Anthropic from '@anthropic-ai/sdk';
 import mammoth from 'mammoth';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const pdfParse = require('pdf-parse');
+import { PDFParse } from 'pdf-parse';
 import { pool } from '../db.js';
 import { authenticate } from '../middleware/auth.js';
 
@@ -20,8 +18,10 @@ async function extractText(file) {
     }
 
     if (ext === 'pdf') {
-        const data = await pdfParse(buffer);
-        return data.text;
+        const parser = new PDFParse({ data: new Uint8Array(buffer) });
+        const result = await parser.getText();
+        await parser.destroy();
+        return result.text;
     }
 
     if (ext === 'docx') {
