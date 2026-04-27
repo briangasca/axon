@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import Anthropic from '@anthropic-ai/sdk';
 import mammoth from 'mammoth';
-import { extractText as extractPdfText } from 'unpdf';
+import { extractText as extractPdfText, getDocumentProxy } from 'unpdf';
 import { pool } from '../db.js';
 import { authenticate } from '../middleware/auth.js';
 
@@ -18,6 +18,10 @@ async function extractText(file) {
     }
 
     if (ext === 'pdf') {
+        const pdf = await getDocumentProxy(new Uint8Array(buffer));
+        if (pdf.numPages > 100) {
+            throw new Error(`PDF is too long (${pdf.numPages} pages). Please upload a PDF with 100 pages or fewer.`);
+        }
         const { text } = await extractPdfText(new Uint8Array(buffer), { mergePages: true });
         return text;
     }
