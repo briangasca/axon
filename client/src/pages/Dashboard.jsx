@@ -164,7 +164,7 @@ export default function Dashboard() {
                         </p>
                     ) : (
                         filtered.map(deck => (
-                            <div key={deck.id} className='bg-gray-700 rounded-lg p-6 flex flex-col justify-between hover:bg-gray-600 transition-colors cursor-pointer'>
+                            <div key={deck.id} className='bg-gray-700 rounded-lg p-6 flex flex-col hover:bg-gray-600 transition-colors cursor-pointer'>
                                 <button className={`py-2 px-2 w-1/2 mb-4 rounded-full cursor-pointer text-sm transition-colors ${deck.is_public ? 'bg-green-600 hover:bg-green-800': 'bg-blue-800 hover:bg-blue-900'}`}
                                     onClick={() => {
                                         setShowEditVisibilityModal(true);
@@ -177,14 +177,11 @@ export default function Dashboard() {
                                         <>
                                             <FontAwesomeIcon icon={faLock} /> Private </>)}
                                 </button>
-                                <div onClick={() => navigate(`/decks/${deck.id}`)}>
-                                    
-
+                                <div className='flex-1' onClick={() => navigate(`/decks/${deck.id}`)}>
                                     <h2 className='text-xl font-bold mb-2'>{deck.title}</h2>
-                                    
-                                    <p className='text-sm text-gray-400 mb-4'>{deck.description}</p>
+                                    <p className='text-sm text-gray-400'>{deck.description}</p>
                                 </div>
-                                <div className='flex gap-2 mt-2'>
+                                <div className='flex gap-2 mt-auto pt-3'>
                                     <button onClick={() => navigate(`/decks/${deck.id}/edit`)} className='flex-1 py-2 rounded-full text-sm bg-green-600 hover:bg-green-800 cursor-pointer transition-colors flex items-center justify-center gap-2'>
                                         <FontAwesomeIcon icon={faPen} /> Edit
                                     </button>
