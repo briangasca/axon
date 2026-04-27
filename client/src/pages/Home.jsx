@@ -79,7 +79,7 @@ export default function Home() {
           <p className="text-blue-300 mb-16 text-lg">It's that easy.</p>
           <div className="flex items-center gap-6">
             {[
-              { step: '01', title: 'Make an Account', desc: 'Sign up in seconds — no credit card, no hassle.' },
+              { step: '01', title: 'Make an Account', desc: 'Sign up quick, no credit card required' },
               { step: '02', title: 'Create Decks', desc: 'Build flashcard decks around any topic you want to master.' },
               { step: '03', title: 'Study', desc: 'Flip through cards at your own pace and lock in what you know.' },
             ].map(({ step, title, desc }, i, arr) => (
@@ -99,13 +99,7 @@ export default function Home() {
         <FadeInSection className="px-16 py-24 border-t border-white/10 flex items-center gap-16">
           <div className="flex-1">
             <h2 className="text-4xl font-cal text-white mb-4">Quiz yourself.</h2>
-            <p className="text-blue-200 text-lg leading-relaxed max-w-md">Generate multiple choice questions directly from your deck. axon turns your flashcards into a real quiz — so you can test your knowledge, not just review it.</p>
-            <button
-              className="mt-8 px-8 py-3 bg-white text-blue-950 font-semibold rounded-full hover:bg-blue-100 transition-all duration-200 cursor-pointer"
-              onClick={() => navigate('/register')}
-            >
-              Try it free →
-            </button>
+            <p className="text-blue-200 text-lg leading-relaxed max-w-md">Generate multiple choice questions directly from your deck. axon turns your flashcards into a real quiz so you can test your knowledge.</p>
           </div>
           <div className="flex-1 bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-8 border border-white/10 flex flex-col gap-4">
             <p className="text-white font-semibold">What is the powerhouse of the cell?</p>
@@ -114,6 +108,36 @@ export default function Home() {
                 {opt}
               </div>
             ))}
+          </div>
+        </FadeInSection>
+
+        {/* AI feature */}
+        <FadeInSection className="px-16 py-24 border-t border-white/10 flex items-center gap-16">
+          <div className="flex-1 bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-8 border border-white/10 flex flex-col gap-4">
+            <p className="text-blue-400 text-xs font-semibold tracking-widest uppercase">Your notes</p>
+            <div className="flex flex-col gap-2">
+              {[
+                'Chapter 4: The Cell Cycle and Mitosis',
+                'Interphase — cell grows and duplicates DNA',
+                'Prophase — chromatin condenses into chromosomes',
+                'Metaphase — chromosomes align at the cell plate',
+                'Anaphase — sister chromatids pulled to opposite poles',
+              ].map((line, i) => (
+                <div key={i} className={`rounded-lg px-4 py-2 text-sm border bg-white/5 border-white/10 text-blue-200 ${i === 0 ? 'font-semibold text-white' : ''}`}>
+                  {line}
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center gap-3 mt-2">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-blue-400 text-xs tracking-widest">→ 20 flashcards generated</span>
+              <div className="h-px flex-1 bg-white/10" />
+            </div>
+          </div>
+          <div className="flex-1">
+            <span className="text-blue-400 text-xs font-semibold tracking-widest uppercase">AI-Powered</span>
+            <h2 className="text-4xl font-cal text-white mt-2 mb-4">Turn your notes into flashcards.</h2>
+            <p className="text-blue-200 text-lg leading-relaxed max-w-md">Upload a PDF, DOCX, or TXT file and let axon do the work. Our AI reads your notes and generates a full deck of flashcards with terms, questions, fill-in-the-blanks, or a mix of all three.</p>
           </div>
         </FadeInSection>
 
